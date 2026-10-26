@@ -146,6 +146,7 @@ Route::prefix('admin')->middleware(['auth', 'role:super_admin,admin,moderator'])
     Route::middleware(['role:super_admin,admin'])->group(function () {
         Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
+        Route::post('/settings/auto-translate', [AdminSettingController::class, 'autoTranslate'])->name('settings.auto-translate');
         Route::get('/audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
     });
 });
