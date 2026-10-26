@@ -1,0 +1,92 @@
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-[#F6F0E5] text-[#342A25] font-sans antialiased min-h-screen selection:bg-[#783C46] selection:text-white;
+        background-color: #F6F0E5;
+        background-image: radial-gradient(#E9DDC7 0.8px, transparent 0.8px);
+        background-size: 24px 24px;
+    }
+
+    h1, h2, h3, h4, .font-serif {
+        font-family: 'Playfair Display', Georgia, serif;
+    }
+}
+
+/* Vintage Paper & Post Office Utility Styles */
+.paper-sheet {
+    background-color: #FAF6EE;
+    background-image: linear-gradient(180deg, rgba(233, 221, 199, 0.25) 1px, transparent 1px);
+    background-size: 100% 2.25rem;
+    box-shadow: 0 4px 20px -2px rgba(52, 42, 37, 0.12), 0 2px 6px -1px rgba(52, 42, 37, 0.08);
+}
+
+.vintage-border {
+    border: 2px dashed #B79A61;
+    border-radius: 6px;
+}
+
+.postal-mark {
+    border: 2px solid rgba(120, 60, 70, 0.35);
+    border-radius: 50%;
+    transform: rotate(-12deg);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    letter-spacing: 0.15em;
+    color: #783C46;
+}
+
+/* Stamp perforation effect */
+.postage-stamp {
+    position: relative;
+    background: #FAF6EE;
+    border: 1px solid #D6C7AE;
+    box-shadow: 0 2px 8px rgba(52, 42, 37, 0.15);
+}
+
+.postage-stamp::after {
+    content: '';
+    position: absolute;
+    inset: -3px;
+    border: 3px dotted #F6F0E5;
+    pointer-events: none;
+}
+
+/* Wax seal badge */
+.wax-seal {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #9B4C5A 0%, #783C46 55%, #582A32 100%);
+    box-shadow: 0 4px 10px rgba(88, 42, 50, 0.4), inset 0 2px 3px rgba(255, 255, 255, 0.25), inset 0 -3px 4px rgba(0, 0, 0, 0.3);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #F6F0E5;
+}
+
+/* Envelope Flap Transitions */
+.envelope-flap {
+    clip-path: polygon(0 0, 50% 50%, 100% 0);
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: top;
+}
+
+.envelope-open .envelope-flap {
+    transform: rotateX(180deg);
+}
+
+/* RTL layout helpers */
+[dir="rtl"] {
+    text-align: right;
+}
+[dir="rtl"] .postal-mark {
+    transform: rotate(12deg);
+}
