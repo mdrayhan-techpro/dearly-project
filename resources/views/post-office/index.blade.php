@@ -6,31 +6,31 @@
     <div class="paper-sheet p-6 sm:p-8 rounded-xl border border-[#E9DDC7] shadow-paper mb-10 relative overflow-hidden">
         <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-center">
             <div class="md:col-span-8 space-y-2">
-                <span class="text-xs font-serif uppercase tracking-widest text-[#B79A61] font-semibold">Post Office Desk</span>
+                <span class="text-xs font-serif uppercase tracking-widest text-[#B79A61] font-semibold">{{ __('Post Office Desk') }}</span>
                 <h1 class="font-serif text-2xl sm:text-3xl font-bold text-[#342A25]">
-                    Welcome back, {{ $user->nickname }}.
+                    {{ __('Welcome back') }}, {{ $user->nickname }}.
                 </h1>
                 <p class="text-xs sm:text-sm text-[#5A4A42] leading-relaxed max-w-xl">
-                    Your quiet sanctuary for thoughtful correspondence. Below is your postal desk with incoming envelopes, drafts, and discovered kindred spirits.
+                    {{ __('Your quiet sanctuary for thoughtful correspondence. Below is your postal desk with incoming envelopes, drafts, and discovered kindred spirits.') }}
                 </p>
             </div>
 
             <!-- Postal Address Badge -->
             <div class="md:col-span-4 bg-[#FAF6EE] p-5 rounded-lg border-2 border-dashed border-[#B79A61] flex flex-col justify-between" x-data="{ copied: false }">
                 <div>
-                    <span class="text-[10px] uppercase tracking-wider text-[#5A4A42] font-semibold block">Your Private Mailing Code</span>
+                    <span class="text-[10px] uppercase tracking-wider text-[#5A4A42] font-semibold block">{{ __('Your Private Mailing Code') }}</span>
                     <span class="font-mono text-base font-bold text-[#783C46] tracking-wider block mt-1 select-all">
                         {{ $mailingCode->code }}
                     </span>
-                    <p class="text-[10px] text-[#5A4A42] mt-1">Share this address with prospective correspondents.</p>
+                    <p class="text-[10px] text-[#5A4A42] mt-1">{{ __('Share this address with prospective correspondents.') }}</p>
                 </div>
                 <div class="mt-3 flex items-center justify-between">
                     <button type="button" @click="navigator.clipboard.writeText('{{ $mailingCode->code }}'); copied = true; setTimeout(() => copied = false, 2000)"
                         class="px-3 py-1.5 text-[11px] font-semibold text-[#783C46] bg-[#F6F0E5] hover:bg-[#E9DDC7] rounded border border-[#D6C7AE] transition-colors">
-                        <span x-show="!copied">Copy Code</span>
-                        <span x-show="copied" x-cloak class="text-[#405B4B]">Copied! ✓</span>
+                        <span x-show="!copied">{{ __('Copy Code') }}</span>
+                        <span x-show="copied" x-cloak class="text-[#405B4B]">{{ __('Copied! ✓') }}</span>
                     </button>
-                    <a href="{{ route('mailing-code.show') }}" class="text-[11px] text-[#B79A61] hover:underline">Settings</a>
+                    <a href="{{ route('mailing-code.show') }}" class="text-[11px] text-[#B79A61] hover:underline">{{ __('Settings') }}</a>
                 </div>
             </div>
         </div>
@@ -42,28 +42,28 @@
             <span class="block text-2xl font-serif font-bold text-[#783C46] group-hover:scale-105 transition-transform">
                 {{ $unreadCount }}
             </span>
-            <span class="text-xs text-[#5A4A42] font-medium">Unopened Letters</span>
+            <span class="text-xs text-[#5A4A42] font-medium">{{ __('Unopened Letters') }}</span>
         </a>
 
         <a href="{{ route('discovery.matches') }}" class="p-4 bg-[#FAF6EE] rounded-lg border border-[#E9DDC7] hover:border-[#783C46] transition-all group shadow-sm">
             <span class="block text-2xl font-serif font-bold text-[#405B4B] group-hover:scale-105 transition-transform">
                 {{ $matchesCount }}
             </span>
-            <span class="text-xs text-[#5A4A42] font-medium">Pen-Pal Matches (90%+)</span>
+            <span class="text-xs text-[#5A4A42] font-medium">{{ __('Pen-Pal Matches (90%+)') }}</span>
         </a>
 
         <a href="{{ route('mailbox.drafts') }}" class="p-4 bg-[#FAF6EE] rounded-lg border border-[#E9DDC7] hover:border-[#783C46] transition-all group shadow-sm">
             <span class="block text-2xl font-serif font-bold text-[#B79A61] group-hover:scale-105 transition-transform">
                 {{ $draftsCount }}
             </span>
-            <span class="text-xs text-[#5A4A42] font-medium">Drafts in Progress</span>
+            <span class="text-xs text-[#5A4A42] font-medium">{{ __('Drafts in Progress') }}</span>
         </a>
 
         <a href="{{ route('mailbox.sent') }}" class="p-4 bg-[#FAF6EE] rounded-lg border border-[#E9DDC7] hover:border-[#783C46] transition-all group shadow-sm">
             <span class="block text-2xl font-serif font-bold text-[#342A25] group-hover:scale-105 transition-transform">
                 {{ $sentCount }}
             </span>
-            <span class="text-xs text-[#5A4A42] font-medium">Letters Dispatched</span>
+            <span class="text-xs text-[#5A4A42] font-medium">{{ __('Letters Dispatched') }}</span>
         </a>
     </div>
 

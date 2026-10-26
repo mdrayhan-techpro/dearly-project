@@ -29,7 +29,7 @@
                         </div>
                         <div>
                             <span class="font-serif text-2xl font-bold tracking-tight text-[#342A25] group-hover:text-[#783C46] transition-colors">Dearly</span>
-                            <span class="hidden sm:block text-[11px] tracking-widest uppercase text-[#B79A61] font-medium">Letters Find Their Way</span>
+                            <span class="hidden sm:block text-[11px] tracking-widest uppercase text-[#B79A61] font-medium">{{ __('Letters Find Their Way') }}</span>
                         </div>
                     </a>
                 </div>
@@ -38,13 +38,13 @@
                 <nav class="hidden md:flex items-center space-x-7 text-sm font-medium">
                     @auth
                         <a href="{{ route('post-office.index') }}" class="{{ request()->routeIs('post-office.*') ? 'text-[#783C46] font-semibold border-b-2 border-[#783C46]' : 'text-[#342A25] hover:text-[#783C46]' }} pb-1 transition-colors">
-                            My Post Office
+                            {{ __('My Post Office') }}
                         </a>
                         <a href="{{ route('discovery.matches') }}" class="{{ request()->routeIs('discovery.*') ? 'text-[#783C46] font-semibold border-b-2 border-[#783C46]' : 'text-[#342A25] hover:text-[#783C46]' }} pb-1 transition-colors">
-                            Find Pen Friends
+                            {{ __('Find Pen Friends') }}
                         </a>
                         <a href="{{ route('mailbox.index') }}" class="{{ request()->routeIs('mailbox.*') ? 'text-[#783C46] font-semibold border-b-2 border-[#783C46]' : 'text-[#342A25] hover:text-[#783C46]' }} pb-1 transition-colors relative">
-                            Mailbox
+                            {{ __('Mailbox') }}
                             @php
                                 $unreadMailCount = \App\Models\Letter::inboxFor(auth()->id())->where('is_read', false)->count();
                             @endphp
@@ -56,15 +56,15 @@
                         </a>
                         <a href="{{ route('letters.compose') }}" class="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white bg-[#783C46] hover:bg-[#582A32] rounded-md shadow-sm transition-all transform hover:-translate-y-0.5">
                             <svg class="w-3.5 h-3.5 mr-1.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
-                            Write Letter
+                            {{ __('Write Letter') }}
                         </a>
                     @else
-                        <a href="{{ route('how-it-works') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">How It Works</a>
-                        <a href="{{ route('about') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">About</a>
-                        <a href="{{ route('faq') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">FAQ</a>
-                        <a href="{{ route('login') }}" class="text-[#783C46] hover:text-[#582A32] font-semibold transition-colors">Sign In</a>
+                        <a href="{{ route('how-it-works') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">{{ __('How It Works') }}</a>
+                        <a href="{{ route('about') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">{{ __('About') }}</a>
+                        <a href="{{ route('faq') }}" class="text-[#342A25] hover:text-[#783C46] transition-colors">{{ __('FAQ') }}</a>
+                        <a href="{{ route('login') }}" class="text-[#783C46] hover:text-[#582A32] font-semibold transition-colors">{{ __('Sign In') }}</a>
                         <a href="{{ route('register') }}" class="inline-flex items-center px-4 py-2 text-xs font-semibold uppercase tracking-wider text-white bg-[#783C46] hover:bg-[#582A32] rounded-md shadow-sm transition-all transform hover:-translate-y-0.5">
-                            Join Post Office
+                            {{ __('Join Post Office') }}
                         </a>
                     @endauth
                 </nav>
@@ -92,7 +92,7 @@
                         @php
                             $unreadNotifs = \App\Models\Notification::where('user_id', auth()->id())->where('is_read', false)->count();
                         @endphp
-                        <a href="{{ route('notifications.index') }}" class="relative p-1.5 text-[#5A4A42] hover:text-[#783C46] transition-colors" title="Notifications">
+                        <a href="{{ route('notifications.index') }}" class="relative p-1.5 text-[#5A4A42] hover:text-[#783C46] transition-colors" title="{{ __('Notifications') }}">
                             <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
                             @if($unreadNotifs > 0)
                                 <span class="absolute top-0.5 right-0.5 w-2.5 h-2.5 bg-[#783C46] rounded-full ring-2 ring-[#FAF6EE]"></span>
@@ -114,20 +114,20 @@
                                         <p class="text-[10px] font-mono text-[#783C46] tracking-wider">{{ auth()->user()->mailingCode->code }}</p>
                                     @endif
                                 </div>
-                                <a href="{{ route('post-office.index') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">Post Office Desk</a>
-                                <a href="{{ route('mailing-code.show') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">My Mailing Code</a>
-                                <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">Profile & Privacy</a>
+                                <a href="{{ route('post-office.index') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">{{ __('Post Office Desk') }}</a>
+                                <a href="{{ route('mailing-code.show') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">{{ __('My Mailing Code') }}</a>
+                                <a href="{{ route('profile.show') }}" class="block px-4 py-2 text-xs text-[#342A25] hover:bg-[#E9DDC7]/60">{{ __('Profile & Privacy') }}</a>
                                 @if(auth()->user()->isAdmin())
                                     <div class="border-t border-[#E9DDC7] my-1"></div>
                                     <a href="{{ route('admin.dashboard') }}" class="block px-4 py-2 text-xs font-semibold text-[#783C46] hover:bg-[#E9DDC7]/60">
-                                        Admin Sanctuary
+                                        {{ __('Admin Sanctuary') }}
                                     </a>
                                 @endif
                                 <div class="border-t border-[#E9DDC7] my-1"></div>
                                 <form method="POST" action="{{ route('logout') }}">
                                     @csrf
                                     <button type="submit" class="w-full text-left px-4 py-2 text-xs text-[#783C46] hover:bg-[#E9DDC7]/60">
-                                        Sign Out
+                                        {{ __('Sign Out') }}
                                     </button>
                                 </form>
                             </div>
@@ -188,43 +188,43 @@
                         <span class="font-serif text-xl font-bold text-[#342A25]">Dearly</span>
                     </div>
                     <p class="text-xs text-[#5A4A42] leading-relaxed">
-                        A slow, privacy-first digital correspondence sanctuary designed to bring back the forgotten magic of letters, stamps, and genuine pen friendships.
+                        {{ __('A slow, privacy-first digital correspondence sanctuary designed to bring back the forgotten magic of letters, stamps, and genuine pen friendships.') }}
                     </p>
                     <div class="postal-mark px-3 py-1">
-                        Est. Post Office
+                        {{ __('Est. Post Office') }}
                     </div>
                 </div>
 
                 <!-- Col 2: Navigation -->
                 <div>
-                    <h4 class="font-serif text-sm font-bold text-[#342A25] mb-3">Postal Services</h4>
+                    <h4 class="font-serif text-sm font-bold text-[#342A25] mb-3">{{ __('Postal Services') }}</h4>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('discovery.choose-length') }}" class="hover:text-[#783C46] transition-colors">Find a Pen Friend</a></li>
-                        <li><a href="{{ route('letters.compose') }}" class="hover:text-[#783C46] transition-colors">Letter-Writing Studio</a></li>
-                        <li><a href="{{ route('mailbox.index') }}" class="hover:text-[#783C46] transition-colors">Received Letters</a></li>
-                        <li><a href="{{ route('mailing-code.show') }}" class="hover:text-[#783C46] transition-colors">Private Mailing Code</a></li>
+                        <li><a href="{{ route('discovery.choose-length') }}" class="hover:text-[#783C46] transition-colors">{{ __('Find Pen Friends') }}</a></li>
+                        <li><a href="{{ route('letters.compose') }}" class="hover:text-[#783C46] transition-colors">{{ __('Write Letter') }}</a></li>
+                        <li><a href="{{ route('mailbox.index') }}" class="hover:text-[#783C46] transition-colors">{{ __('Received Letters') }}</a></li>
+                        <li><a href="{{ route('mailing-code.show') }}" class="hover:text-[#783C46] transition-colors">{{ __('Private Mailing Code') }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 3: Principles -->
                 <div>
-                    <h4 class="font-serif text-sm font-bold text-[#342A25] mb-3">Safety & Governance</h4>
+                    <h4 class="font-serif text-sm font-bold text-[#342A25] mb-3">{{ __('Safety & Governance') }}</h4>
                     <ul class="space-y-2">
-                        <li><a href="{{ route('privacy') }}" class="hover:text-[#783C46] transition-colors">Privacy Promise</a></li>
-                        <li><a href="{{ route('guidelines') }}" class="hover:text-[#783C46] transition-colors">Community Guidelines</a></li>
-                        <li><a href="{{ route('terms') }}" class="hover:text-[#783C46] transition-colors">Terms of Service</a></li>
-                        <li><a href="{{ route('faq') }}" class="hover:text-[#783C46] transition-colors">Frequently Asked Questions</a></li>
+                        <li><a href="{{ route('privacy') }}" class="hover:text-[#783C46] transition-colors">{{ __('Privacy Promise') }}</a></li>
+                        <li><a href="{{ route('guidelines') }}" class="hover:text-[#783C46] transition-colors">{{ __('Community Guidelines') }}</a></li>
+                        <li><a href="{{ route('terms') }}" class="hover:text-[#783C46] transition-colors">{{ __('Terms of Service') }}</a></li>
+                        <li><a href="{{ route('faq') }}" class="hover:text-[#783C46] transition-colors">{{ __('Frequently Asked Questions') }}</a></li>
                     </ul>
                 </div>
 
                 <!-- Col 4: Postal Seal / Tagline -->
                 <div class="bg-[#F6F0E5] p-4 rounded-lg border border-[#E9DDC7] text-center space-y-2">
-                    <p class="font-handwriting text-2xl text-[#783C46]">"Letters Find Their Way"</p>
+                    <p class="font-handwriting text-2xl text-[#783C46]">"{{ __('Letters Find Their Way') }}"</p>
                     <p class="text-[11px] text-[#5A4A42]">
-                        Every letter is encrypted in storage, isolated to authorized participants, and sealed with care.
+                        {{ __('Every letter is encrypted in storage, isolated to authorized participants, and sealed with care.') }}
                     </p>
                     <p class="text-[10px] text-[#B79A61] pt-1">
-                        © {{ date('Y') }} Dearly Post Office. All rights reserved.
+                        © {{ date('Y') }} Dearly {{ __('Post Office') }}. {{ __('All rights reserved.') }}
                     </p>
                 </div>
             </div>
