@@ -34,9 +34,11 @@ class CorrespondenceConnection extends Model
     public static function areConnected(int $userA, int $userB): bool
     {
         return static::where(function ($q) use ($userA, $userB) {
-            $q->where('user_one_id', $userA)->where('user_two_id', $userB);
-        })->orWhere(function ($q) use ($userA, $userB) {
-            $q->where('user_one_id', $userB)->where('user_two_id', $userA);
+            $q->where(function ($pair) use ($userA, $userB) {
+                $pair->where('user_one_id', $userA)->where('user_two_id', $userB);
+            })->orWhere(function ($pair) use ($userA, $userB) {
+                $pair->where('user_one_id', $userB)->where('user_two_id', $userA);
+            });
         })->where('status', 'connected')->exists();
     }
 }

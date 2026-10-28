@@ -1,2 +1,21 @@
 User-agent: *
-Disallow:
+Disallow: /admin/
+Disallow: /mailbox/
+Disallow: /letters/
+Disallow: /threads/
+Disallow: /profile/
+Disallow: /notifications/
+Disallow: /onboarding/
+Disallow: /discovery/
+Disallow: /questionnaire/
+Disallow: /auth/
+
+Allow: /
+Allow: /about
+Allow: /how-it-works
+Allow: /faq
+Allow: /privacy
+Allow: /terms
+Allow: /community-guidelines
+
+Sitemap: /sitemap.xml

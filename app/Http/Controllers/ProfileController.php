@@ -4,11 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\UserProfile;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rule;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class ProfileController extends Controller
 {
@@ -63,6 +67,64 @@ class ProfileController extends Controller
         session(['locale' => $validated['preferred_language']]);
 
         return back()->with('status', 'Your profile and privacy settings have been updated.');
+    }
+
+    public function updatePassword(Request $request): RedirectResponse
+    {
+        $user = auth()->user();
+
+        $validated = $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', Password::defaults()],
+        ]);
+
+        $user->update([
+            'password' => Hash::make($validated['password']),
+        ]);
+
+        return back()->with('status', __('Your password has been securely updated.'));
+    }
+
+    public function exportData(): StreamedResponse
+    {
+        $user = auth()->user();
+        $user->load(['profile', 'mailingCode', 'questionnaireAttempts.answers', 'sentLetters', 'receivedLetters']);
+
+        $export = [
+            'exported_at' => now()->toIso8601String(),
+            'platform' => 'Dearly Postal Sanctuary',
+            'account' => [
+                'name' => $user->name,
+                'email' => $user->email,
+                'created_at' => $user->created_at?->toIso8601String(),
+            ],
+            'profile' => [
+                'nickname' => $user->profile?->nickname,
+                'bio' => $user->profile?->bio,
+                'interests' => $user->profile?->interests,
+                'country' => $user->profile?->country,
+                'preferred_language' => $user->profile?->preferred_language,
+            ],
+            'mailing_code' => $user->mailingCode?->code,
+            'questionnaire_history' => $user->questionnaireAttempts->map(fn($q) => [
+                'completed_at' => $q->completed_at?->toIso8601String(),
+                'length' => $q->questionnaire_length,
+                'answers_count' => $q->answers->count(),
+            ]),
+            'correspondence_metrics' => [
+                'sent_letters_count' => $user->sentLetters->count(),
+                'received_letters_count' => $user->receivedLetters->count(),
+            ],
+        ];
+
+        $json = json_encode($export, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
+        $filename = 'dearly-archive-' . ($user->profile?->nickname ?? 'account') . '-' . date('Y-m-d') . '.json';
+
+        return response()->streamDownload(function () use ($json) {
+            echo $json;
+        }, $filename, [
+            'Content-Type' => 'application/json',
+        ]);
     }
 
     public function switchLanguage(string $locale): RedirectResponse

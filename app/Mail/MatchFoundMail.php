@@ -15,6 +15,8 @@ class MatchFoundMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(
         public User $recipientUser,
         public MatchResult $matchResult,

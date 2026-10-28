@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 
@@ -48,37 +49,48 @@ class TranslationService
     }
 
     /**
-     * Translates a chunk using MyMemory API with error protection.
+     * Translates a chunk using MyMemory API with error protection and persistent caching.
      */
     protected function translateChunk(string $chunk, string $targetLocale, string $sourceLocale = 'en'): string
     {
-        try {
-            $response = Http::timeout(10)
-                ->withoutVerifying()
-                ->withHeaders([
-                    'User-Agent' => 'DearlyPostalSanctuary/1.0 (Laravel; Education/Non-Commercial)',
-                ])
-                ->get('https://api.mymemory.translated.net/get', [
+        $cacheKey = 'trans_' . md5("{$sourceLocale}_{$targetLocale}_{$chunk}");
+
+        return Cache::rememberForever($cacheKey, function () use ($chunk, $targetLocale, $sourceLocale) {
+            try {
+                $client = Http::timeout(5)
+                    ->withHeaders([
+                        'User-Agent' => 'DearlyPostalSanctuary/1.0 (Laravel; Education/Non-Commercial)',
+                    ]);
+
+                $caPath = storage_path('cacert.pem');
+                if (file_exists($caPath)) {
+                    $client = $client->withOptions(['verify' => $caPath]);
+                } elseif (app()->isLocal() && !ini_get('curl.cainfo')) {
+                    $client = $client->withoutVerifying();
+                }
+
+                $response = $client->get('https://api.mymemory.translated.net/get', [
                     'q' => $chunk,
                     'langpair' => "{$sourceLocale}|{$targetLocale}",
                 ]);
 
-            if ($response->successful()) {
-                $data = $response->json();
-                if (!empty($data['responseData']['translatedText'])) {
-                    $translated = html_entity_decode($data['responseData']['translatedText'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
-                    // Avoid returning warning messages from API if any
-                    if (!str_contains($translated, 'MYMEMORY WARNING')) {
-                        return $translated;
+                if ($response->successful()) {
+                    $data = $response->json();
+                    if (!empty($data['responseData']['translatedText'])) {
+                        $translated = html_entity_decode($data['responseData']['translatedText'], ENT_QUOTES | ENT_HTML5, 'UTF-8');
+                        // Avoid returning warning messages from API if any
+                        if (!str_contains($translated, 'MYMEMORY WARNING')) {
+                            return $translated;
+                        }
                     }
                 }
+            } catch (\Throwable $e) {
+                Log::warning("Translation API exception for [{$sourceLocale}->{$targetLocale}]: " . $e->getMessage());
             }
-        } catch (\Throwable $e) {
-            Log::warning("Translation API exception for [{$sourceLocale}->{$targetLocale}]: " . $e->getMessage());
-        }
 
-        // Fallback to original chunk if translation service is unavailable
-        return $chunk;
+            // Fallback to original chunk if translation service is unavailable
+            return $chunk;
+        });
     }
 
     /**

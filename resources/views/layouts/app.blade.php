@@ -8,17 +8,31 @@
     <title>{{ config('app.name', 'Dearly') }} — {{ $title ?? 'Letters Find Their Way' }}</title>
     <meta name="description" content="A global nostalgic digital pen-pal and letter-writing platform. Recreating the emotional magic of slow correspondence.">
 
+    <!-- Canonical & Social Sharing (OpenGraph & Twitter Cards) -->
+    <link rel="canonical" href="{{ url()->current() }}">
+    <meta property="og:site_name" content="{{ config('app.name', 'Dearly') }}">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ config('app.name', 'Dearly') }} — {{ $title ?? 'Letters Find Their Way' }}">
+    <meta property="og:description" content="A global nostalgic digital pen-pal and letter-writing platform. Recreating the emotional magic of slow correspondence.">
+    <meta property="og:url" content="{{ url()->current() }}">
+    <meta property="og:image" content="{{ asset('android-chrome-512x512.png') }}?v=2">
+    <meta name="twitter:card" content="summary">
+    <meta name="twitter:title" content="{{ config('app.name', 'Dearly') }} — {{ $title ?? 'Letters Find Their Way' }}">
+    <meta name="twitter:description" content="A global nostalgic digital pen-pal and letter-writing platform. Recreating the emotional magic of slow correspondence.">
+    <meta name="twitter:image" content="{{ asset('android-chrome-512x512.png') }}?v=2">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
     <!-- Favicon & Mobile Web App Icons -->
-    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
-    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
-    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
-    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}?v=2">
+    <link rel="icon" type="image/png" sizes="48x48" href="{{ asset('favicon-48x48.png') }}?v=2">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}?v=2">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}?v=2">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}?v=2">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}?v=2">
     <meta name="theme-color" content="#783C46">
 
     <!-- Scripts & Styles -->

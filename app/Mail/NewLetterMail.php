@@ -15,6 +15,8 @@ class NewLetterMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
+    public bool $deleteWhenMissingModels = true;
+
     public function __construct(
         public User $recipientUser,
         public Letter $letter

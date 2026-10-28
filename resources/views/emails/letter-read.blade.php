@@ -55,7 +55,7 @@
                                 <tr>
                                     <td align="center" style="background-color: #783C46; border-radius: 4px; box-shadow: 0 2px 6px rgba(120, 60, 70, 0.3);">
                                         <a href="{{ route('mailbox.sent') }}" target="_blank" style="display: inline-block; padding: 14px 28px; font-size: 14px; font-weight: bold; color: #FFFFFF; text-decoration: none; letter-spacing: 1px;">
-                                            {{ __('View Sent Dispatch &rarr;') }}
+                                            {!! __('View Sent Dispatch &rarr;') !!}
                                         </a>
                                     </td>
                                 </tr>

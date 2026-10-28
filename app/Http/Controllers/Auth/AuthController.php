@@ -114,6 +114,23 @@ class AuthController extends Controller
     }
 
     /**
+     * Get configured Google Socialite driver with SSL cert support.
+     */
+    protected function getGoogleDriver()
+    {
+        $driver = Socialite::driver('google');
+
+        $caPath = storage_path('cacert.pem');
+        if (file_exists($caPath)) {
+            $driver->setHttpClient(new \GuzzleHttp\Client([
+                'verify' => $caPath,
+            ]));
+        }
+
+        return $driver;
+    }
+
+    /**
      * Redirect to Google OAuth Provider
      */
     public function googleRedirect(): RedirectResponse
@@ -122,7 +139,7 @@ class AuthController extends Controller
             return redirect()->route('login')->with('warning', 'Google OAuth client credentials are not configured in .env. Please use local login or test personas.');
         }
 
-        return Socialite::driver('google')->redirect();
+        return $this->getGoogleDriver()->redirect();
     }
 
     /**
@@ -131,9 +148,12 @@ class AuthController extends Controller
     public function googleCallback(MailingCodeService $mailingCodeService): RedirectResponse
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
+            $googleUser = $this->getGoogleDriver()->stateless()->user();
         } catch (Exception $e) {
-            return redirect()->route('login')->withErrors(['oauth' => 'Google authentication was cancelled or failed. Please try again.']);
+            Log::error('Google OAuth Callback Exception: ' . $e->getMessage(), [
+                'exception' => $e,
+            ]);
+            return redirect()->route('login')->withErrors(['oauth' => 'Google authentication was cancelled or failed. Please try again. (' . $e->getMessage() . ')']);
         }
 
         // Check if oauth account exists

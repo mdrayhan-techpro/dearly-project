@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\AdminStationeryController;
 use App\Http\Controllers\Admin\AdminSystemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
+use App\Http\Controllers\Auth\PasswordResetController;
 
 use App\Http\Controllers\DiscoveryController;
 use App\Http\Controllers\HomeController;
@@ -42,9 +43,15 @@ Route::get('/locale/{locale}', [ProfileController::class, 'switchLanguage'])->na
 // Authentication Routes
 Route::middleware('guest')->group(function () {
     Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-    Route::post('/login', [AuthController::class, 'login'])->name('login.submit');
+    Route::post('/login', [AuthController::class, 'login'])->middleware('throttle:6,1')->name('login.submit');
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
-    Route::post('/register', [AuthController::class, 'register'])->name('register.submit');
+    Route::post('/register', [AuthController::class, 'register'])->middleware('throttle:5,1')->name('register.submit');
+
+    // Password Reset
+    Route::get('/forgot-password', [PasswordResetController::class, 'showForgotPassword'])->name('password.request');
+    Route::post('/forgot-password', [PasswordResetController::class, 'sendResetLink'])->middleware('throttle:5,1')->name('password.email');
+    Route::get('/reset-password/{token}', [PasswordResetController::class, 'showResetPassword'])->name('password.reset');
+    Route::post('/reset-password', [PasswordResetController::class, 'resetPassword'])->middleware('throttle:5,1')->name('password.update');
 
     // Google OAuth
     Route::get('/auth/google/redirect', [AuthController::class, 'googleRedirect'])->name('auth.google.redirect');
@@ -91,7 +98,7 @@ Route::middleware(['auth', 'profile.complete'])->group(function () {
 
     // Envelope Folding Studio & Dispatches
     Route::get('/letters/{id}/fold', [LetterComposerController::class, 'foldStudio'])->name('letters.fold');
-    Route::post('/letters/{id}/send', [LetterComposerController::class, 'send'])->name('letters.send');
+    Route::post('/letters/{id}/send', [LetterComposerController::class, 'send'])->middleware('throttle:15,1')->name('letters.send');
 
     // Mailbox Views
     Route::get('/letters/received', [MailboxController::class, 'inbox'])->name('mailbox.index');
@@ -112,12 +119,14 @@ Route::middleware(['auth', 'profile.complete'])->group(function () {
     // Profile & Privacy
     Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::put('/profile/password', [ProfileController::class, 'updatePassword'])->name('profile.password');
+    Route::get('/profile/export', [ProfileController::class, 'exportData'])->name('profile.export');
     Route::delete('/profile/delete-account', [ProfileController::class, 'destroyAccount'])->name('profile.destroy');
 
     // Safety & Moderation
     Route::post('/safety/block/{userId}', [SafetyController::class, 'blockUser'])->name('safety.block');
     Route::post('/safety/unblock/{userId}', [SafetyController::class, 'unblockUser'])->name('safety.unblock');
-    Route::post('/safety/report', [SafetyController::class, 'report'])->name('safety.report');
+    Route::post('/safety/report', [SafetyController::class, 'report'])->middleware('throttle:10,1')->name('safety.report');
 });
 
 // Admin Panel Routes
