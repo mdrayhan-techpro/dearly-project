@@ -6,30 +6,31 @@
 <div class="space-y-8">
     <!-- Key Metric Counters -->
     <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-5">
-        <div class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm">
+        <a href="{{ route('admin.users.index') }}" class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm hover:border-[#783C46]/50 transition-colors block">
             <span class="text-xs uppercase tracking-wider text-[#8A7972] font-semibold block">Total Registered Users</span>
             <span class="text-3xl font-serif font-bold text-[#2D2420] mt-1 block">{{ number_format($metrics['total_users']) }}</span>
             <span class="text-[11px] text-[#405B4B] font-medium mt-1 block">{{ $metrics['active_users'] }} active / {{ $metrics['suspended_users'] }} suspended</span>
-        </div>
+        </a>
 
-        <div class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm">
+        <a href="{{ route('admin.questions.index') }}" class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm hover:border-[#783C46]/50 transition-colors block">
             <span class="text-xs uppercase tracking-wider text-[#8A7972] font-semibold block">Completed Questionnaires</span>
             <span class="text-3xl font-serif font-bold text-[#783C46] mt-1 block">{{ number_format($metrics['completed_questionnaires']) }}</span>
             <span class="text-[11px] text-[#5A4A42] font-medium mt-1 block">Ready for Matching Engine</span>
-        </div>
+        </a>
 
-        <div class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm">
+        <a href="{{ route('admin.matches.index') }}" class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm hover:border-[#783C46]/50 transition-colors block">
             <span class="text-xs uppercase tracking-wider text-[#8A7972] font-semibold block">Generated Matches (90%+)</span>
             <span class="text-3xl font-serif font-bold text-[#405B4B] mt-1 block">{{ number_format($metrics['matches_generated']) }}</span>
-            <span class="text-[11px] text-[#5A4A42] font-medium mt-1 block">Active Compatibility Pairings</span>
-        </div>
+            <span class="text-[11px] text-[#5A4A42] font-medium mt-1 block">Active Compatibility Pairings &rarr;</span>
+        </a>
 
-        <div class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm">
+        <a href="{{ route('admin.letters.index') }}" class="bg-white p-5 rounded-lg border border-[#E0D7D0] shadow-sm hover:border-[#783C46]/50 transition-colors block">
             <span class="text-xs uppercase tracking-wider text-[#8A7972] font-semibold block">Letters Dispatched</span>
             <span class="text-3xl font-serif font-bold text-[#B79A61] mt-1 block">{{ number_format($metrics['letters_sent']) }}</span>
-            <span class="text-[11px] text-[#405B4B] font-medium mt-1 block">{{ $metrics['letters_read'] }} verified read</span>
-        </div>
+            <span class="text-[11px] text-[#405B4B] font-medium mt-1 block">{{ $metrics['letters_read'] }} verified read &rarr;</span>
+        </a>
     </div>
+
 
     <!-- Middle Split: Recent Users & Moderation Reports -->
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
@@ -40,41 +41,43 @@
                 <a href="{{ route('admin.users.index') }}" class="text-xs text-[#783C46] font-semibold hover:underline">View All &rarr;</a>
             </div>
 
-            <table class="w-full text-left text-xs">
-                <thead class="text-[#8A7972] uppercase text-[10px] tracking-wider border-b border-[#E0D7D0]">
-                    <tr>
-                        <th class="pb-2">User / Pseudonym</th>
-                        <th class="pb-2">Mailing Code</th>
-                        <th class="pb-2">Role</th>
-                        <th class="pb-2">Status</th>
-                    </tr>
-                </thead>
-                <tbody class="divide-y divide-[#F0EAE4]">
-                    @foreach($recentUsers as $user)
-                        <tr class="hover:bg-[#FAF6EE] transition-colors">
-                            <td class="py-2.5">
-                                <a href="{{ route('admin.users.show', $user->id) }}" class="font-bold text-[#2D2420] hover:text-[#783C46]">
-                                    {{ $user->nickname }}
-                                </a>
-                                <span class="text-[10px] text-[#8A7972] block">{{ $user->email }}</span>
-                            </td>
-                            <td class="py-2.5 font-mono text-[10px] text-[#B79A61]">
-                                {{ $user->mailingCode?->code ?? 'Pending' }}
-                            </td>
-                            <td class="py-2.5 capitalize text-[11px]">
-                                {{ str_replace('_', ' ', $user->role) }}
-                            </td>
-                            <td class="py-2.5">
-                                @if($user->is_suspended)
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800">Suspended</span>
-                                @else
-                                    <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800">Active</span>
-                                @endif
-                            </td>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs min-w-[500px]">
+                    <thead class="text-[#8A7972] uppercase text-[10px] tracking-wider border-b border-[#E0D7D0]">
+                        <tr>
+                            <th class="pb-2">User / Pseudonym</th>
+                            <th class="pb-2">Mailing Code</th>
+                            <th class="pb-2">Role</th>
+                            <th class="pb-2">Status</th>
                         </tr>
-                    @endforeach
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="divide-y divide-[#F0EAE4]">
+                        @foreach($recentUsers as $user)
+                            <tr class="hover:bg-[#FAF6EE] transition-colors">
+                                <td class="py-2.5">
+                                    <a href="{{ route('admin.users.show', $user->id) }}" class="font-bold text-[#2D2420] hover:text-[#783C46]">
+                                        {{ $user->nickname }}
+                                    </a>
+                                    <span class="text-[10px] text-[#8A7972] block">{{ $user->email }}</span>
+                                </td>
+                                <td class="py-2.5 font-mono text-[10px] text-[#B79A61]">
+                                    {{ $user->mailingCode?->code ?? 'Pending' }}
+                                </td>
+                                <td class="py-2.5 capitalize text-[11px]">
+                                    {{ str_replace('_', ' ', $user->role) }}
+                                </td>
+                                <td class="py-2.5">
+                                    @if($user->is_suspended)
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-red-100 text-red-800">Suspended</span>
+                                    @else
+                                        <span class="px-2 py-0.5 rounded text-[10px] font-bold bg-green-100 text-green-800">Active</span>
+                                    @endif
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
+                </table>
+            </div>
         </div>
 
         <!-- Open Safety Reports -->

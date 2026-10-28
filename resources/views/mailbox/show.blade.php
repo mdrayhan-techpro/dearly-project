@@ -16,7 +16,7 @@
             @endif
         </div>
 
-        <div class="flex items-center space-x-3 text-xs">
+        <div class="flex flex-wrap items-center gap-2 sm:gap-3 text-xs">
             @if($letter->recipient_id === $user->id)
                 <a href="{{ route('letters.compose', ['reply_to' => $letter->id]) }}" class="px-5 py-2 font-semibold uppercase tracking-wider text-white bg-[#783C46] hover:bg-[#582A32] rounded shadow-sm transition-all transform hover:-translate-y-0.5">
                     Write a Reply &rarr;
@@ -55,12 +55,12 @@
         $themeText = $letter->stationeryTheme?->text_color ?? '#342A25';
     @endphp
 
-    <article class="paper-sheet p-8 sm:p-14 rounded-2xl shadow-envelope relative border border-[#E9DDC7]" style="background-color: {{ $themeBg }}; color: {{ $themeText }};">
+    <article class="paper-sheet p-5 sm:p-10 lg:p-14 rounded-2xl shadow-envelope relative border border-[#E9DDC7]" style="background-color: {{ $themeBg }}; color: {{ $themeText }};">
         <!-- Top Right Postage Stamp with Cancellation Mark -->
-        <div class="absolute top-8 right-8 z-20">
-            <div class="postage-stamp w-16 h-20 p-1 flex flex-col items-center justify-between text-center bg-white shadow-sm">
+        <div class="absolute top-4 right-4 sm:top-8 sm:right-8 z-20">
+            <div class="postage-stamp w-14 h-18 sm:w-16 sm:h-20 p-1 flex flex-col items-center justify-between text-center bg-white shadow-sm">
                 <span class="text-[7px] font-mono text-[#B79A61] uppercase tracking-wider">Airmail</span>
-                <span class="text-xl text-[#783C46]">❦</span>
+                <span class="text-lg sm:text-xl text-[#783C46]">❦</span>
                 <span class="text-[8px] font-bold text-[#342A25] truncate w-full">{{ $letter->postageStamp?->name ?? 'First Letter' }}</span>
             </div>
             <!-- Postal Cancellation Mark -->
@@ -70,7 +70,7 @@
         </div>
 
         <!-- Header Metadata -->
-        <div class="mb-8 pr-20 border-b border-[#E9DDC7]/60 pb-6">
+        <div class="mb-8 pr-16 sm:pr-24 border-b border-[#E9DDC7]/60 pb-6">
             <span class="text-[10px] font-mono uppercase tracking-widest text-[#B79A61] block mb-1">
                 Dispatched by {{ $letter->sender->nickname }}
             </span>

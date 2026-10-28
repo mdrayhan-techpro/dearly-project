@@ -1,13 +1,20 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminAnalyticsController;
 use App\Http\Controllers\Admin\AdminAuditLogController;
+use App\Http\Controllers\Admin\AdminBroadcastController;
 use App\Http\Controllers\Admin\AdminDashboardController;
+use App\Http\Controllers\Admin\AdminLetterController;
+use App\Http\Controllers\Admin\AdminMailingCodeController;
+use App\Http\Controllers\Admin\AdminMatchController;
 use App\Http\Controllers\Admin\AdminQuestionnaireController;
 use App\Http\Controllers\Admin\AdminReportController;
 use App\Http\Controllers\Admin\AdminSettingController;
 use App\Http\Controllers\Admin\AdminStationeryController;
+use App\Http\Controllers\Admin\AdminSystemController;
 use App\Http\Controllers\Admin\AdminUserController;
 use App\Http\Controllers\Auth\AuthController;
+
 use App\Http\Controllers\DiscoveryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LetterComposerController;
@@ -115,6 +122,7 @@ Route::middleware(['auth', 'profile.complete'])->group(function () {
 // Admin Panel Routes
 Route::prefix('admin')->middleware(['auth', 'role:super_admin,admin,moderator'])->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/analytics', [AdminAnalyticsController::class, 'index'])->name('analytics.index');
 
     // User Management
     Route::get('/users', [AdminUserController::class, 'index'])->name('users.index');
@@ -123,30 +131,71 @@ Route::prefix('admin')->middleware(['auth', 'role:super_admin,admin,moderator'])
     Route::post('/users/{id}/reinstate', [AdminUserController::class, 'reinstate'])->name('users.reinstate');
     Route::put('/users/{id}/role', [AdminUserController::class, 'updateRole'])->name('users.role');
 
-    // Questions & Matching
+    // Mailing Code Fleet
+    Route::get('/mailing-codes', [AdminMailingCodeController::class, 'index'])->name('mailing-codes.index');
+    Route::post('/mailing-codes/{id}/toggle', [AdminMailingCodeController::class, 'toggle'])->name('mailing-codes.toggle');
+    Route::post('/mailing-codes/{id}/rotate', [AdminMailingCodeController::class, 'rotate'])->name('mailing-codes.rotate');
+    Route::put('/mailing-codes/{id}/policy', [AdminMailingCodeController::class, 'updatePolicy'])->name('mailing-codes.policy');
+
+    // Postal Traffic & Letter Ledger
+    Route::get('/letters', [AdminLetterController::class, 'index'])->name('letters.index');
+    Route::get('/letters/{id}', [AdminLetterController::class, 'show'])->name('letters.show');
+    Route::post('/letters/{id}/quarantine', [AdminLetterController::class, 'quarantine'])->name('letters.quarantine');
+    Route::post('/letters/{id}/release', [AdminLetterController::class, 'release'])->name('letters.release');
+
+    // Kindred Matches & Compatibility Explorer
+    Route::get('/matches', [AdminMatchController::class, 'index'])->name('matches.index');
+    Route::post('/matches/rerun', [AdminMatchController::class, 'rerun'])->name('matches.rerun');
+
+    // Questions & Matching Engine
     Route::get('/questions', [AdminQuestionnaireController::class, 'index'])->name('questions.index');
     Route::get('/questions/create', [AdminQuestionnaireController::class, 'create'])->name('questions.create');
     Route::post('/questions', [AdminQuestionnaireController::class, 'store'])->name('questions.store');
     Route::get('/questions/{id}/edit', [AdminQuestionnaireController::class, 'edit'])->name('questions.edit');
     Route::put('/questions/{id}', [AdminQuestionnaireController::class, 'update'])->name('questions.update');
+    Route::post('/questions/{id}/order', [AdminQuestionnaireController::class, 'updateOrder'])->name('questions.order');
     Route::post('/questions/{id}/toggle', [AdminQuestionnaireController::class, 'toggleActive'])->name('questions.toggle');
 
-    // Stationery & Stamps
+    // Stationery, Stamps & Wax Seals (with Edit, Toggle, and Delete)
     Route::get('/stationery', [AdminStationeryController::class, 'index'])->name('stationery.index');
     Route::post('/stationery/themes', [AdminStationeryController::class, 'storeTheme'])->name('stationery.theme_store');
+    Route::put('/stationery/themes/{id}', [AdminStationeryController::class, 'updateTheme'])->name('stationery.theme_update');
+    Route::post('/stationery/themes/{id}/toggle', [AdminStationeryController::class, 'toggleTheme'])->name('stationery.theme_toggle');
+    Route::delete('/stationery/themes/{id}', [AdminStationeryController::class, 'destroyTheme'])->name('stationery.theme_destroy');
+
     Route::post('/stationery/stamps', [AdminStationeryController::class, 'storeStamp'])->name('stationery.stamp_store');
+    Route::put('/stationery/stamps/{id}', [AdminStationeryController::class, 'updateStamp'])->name('stationery.stamp_update');
+    Route::post('/stationery/stamps/{id}/toggle', [AdminStationeryController::class, 'toggleStamp'])->name('stationery.stamp_toggle');
+    Route::delete('/stationery/stamps/{id}', [AdminStationeryController::class, 'destroyStamp'])->name('stationery.stamp_destroy');
+
     Route::post('/stationery/seals', [AdminStationeryController::class, 'storeSeal'])->name('stationery.seal_store');
+    Route::put('/stationery/seals/{id}', [AdminStationeryController::class, 'updateSeal'])->name('stationery.seal_update');
+    Route::post('/stationery/seals/{id}/toggle', [AdminStationeryController::class, 'toggleSeal'])->name('stationery.seal_toggle');
+    Route::delete('/stationery/seals/{id}', [AdminStationeryController::class, 'destroySeal'])->name('stationery.seal_destroy');
+
+    // Postmaster Broadcast & Mailroom
+    Route::get('/broadcast', [AdminBroadcastController::class, 'index'])->name('broadcast.index');
+    Route::post('/broadcast/send', [AdminBroadcastController::class, 'send'])->name('broadcast.send');
+    Route::get('/broadcast/preview-email', [AdminBroadcastController::class, 'previewEmail'])->name('broadcast.preview-email');
 
     // Moderation & Reports
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{id}', [AdminReportController::class, 'show'])->name('reports.show');
     Route::post('/reports/{id}/action', [AdminReportController::class, 'takeAction'])->name('reports.action');
 
-    // Platform Settings & Audit Logs (Super Admin & Admin only)
+    // Platform Settings, Health & Audit Logs (Super Admin & Admin only)
     Route::middleware(['role:super_admin,admin'])->group(function () {
         Route::get('/settings', [AdminSettingController::class, 'index'])->name('settings.index');
         Route::put('/settings', [AdminSettingController::class, 'update'])->name('settings.update');
         Route::post('/settings/auto-translate', [AdminSettingController::class, 'autoTranslate'])->name('settings.auto-translate');
+
+        Route::get('/system-health', [AdminSystemController::class, 'index'])->name('system.index');
+        Route::post('/system-health/clear-cache', [AdminSystemController::class, 'clearCache'])->name('system.clear-cache');
+        Route::post('/system-health/optimize', [AdminSystemController::class, 'optimize'])->name('system.optimize');
+        Route::post('/system-health/retry-jobs', [AdminSystemController::class, 'retryJobs'])->name('system.retry-jobs');
+        Route::post('/system-health/flush-jobs', [AdminSystemController::class, 'flushJobs'])->name('system.flush-jobs');
+
         Route::get('/audit-logs', [AdminAuditLogController::class, 'index'])->name('audit-logs.index');
     });
 });
+

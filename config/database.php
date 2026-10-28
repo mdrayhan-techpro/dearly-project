@@ -54,9 +54,33 @@ return [
             'prefix_indexes' => true,
             'strict' => true,
             'engine' => null,
-            'options' => extension_loaded('pdo_mysql') ? array_filter([
-                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
-            ]) : [],
+            'options' => extension_loaded('pdo_mysql') ? (function () {
+                $options = [];
+                if ($sslCa = env('MYSQL_ATTR_SSL_CA')) {
+                    $options[PDO::MYSQL_ATTR_SSL_CA] = $sslCa;
+                    $options[PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT] = false;
+                }
+                return $options;
+            })() : [],
+        ],
+
+        'tidb' => [
+            'driver' => 'mysql',
+            'host' => 'gateway01.ap-southeast-1.prod.aws.tidbcloud.com',
+            'port' => '4000',
+            'database' => 'dearly',
+            'username' => '3ozXEiRLvxNyLS4.root',
+            'password' => 'mpbcmHfxDxTjq3pz',
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? [
+                PDO::MYSQL_ATTR_SSL_CA => storage_path('certs/isrgrootx1.pem'),
+                PDO::MYSQL_ATTR_SSL_VERIFY_SERVER_CERT => false,
+            ] : [],
         ],
 
         'mariadb' => [

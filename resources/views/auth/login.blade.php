@@ -63,50 +63,6 @@
             <a href="{{ route('register') }}" class="text-[#783C46] hover:underline font-semibold">{{ __('Join Dearly') }}</a>
         </p>
 
-        <!-- Quick Developer Test Personas -->
-        <div class="mt-8 pt-6 border-t border-dashed border-[#B79A61]/60">
-            <span class="block text-[11px] font-serif font-bold text-[#783C46] uppercase tracking-wider text-center mb-3">
-                ★ {{ __('Instant Test Personas (One-Click)') }} ★
-            </span>
-            <div class="grid grid-cols-2 gap-2 text-[11px]">
-                <form method="POST" action="{{ route('dev.login') }}">
-                    @csrf
-                    <input type="hidden" name="email" value="eleanor@dearlyletters.com">
-                    <button type="submit" class="w-full p-2 bg-[#F6F0E5] hover:bg-[#E9DDC7] border border-[#D6C7AE] rounded text-left">
-                        <span class="font-bold text-[#342A25] block">Eleanor Vance</span>
-                        <span class="text-[9px] text-[#5A4A42]">{{ __('Botanist • Age 28') }}</span>
-                    </button>
-                </form>
-
-                <form method="POST" action="{{ route('dev.login') }}">
-                    @csrf
-                    <input type="hidden" name="email" value="julian@dearlyletters.com">
-                    <button type="submit" class="w-full p-2 bg-[#F6F0E5] hover:bg-[#E9DDC7] border border-[#D6C7AE] rounded text-left">
-                        <span class="font-bold text-[#342A25] block">Julian Cross</span>
-                        <span class="text-[9px] text-[#5A4A42]">{{ __('Photographer • Age 31') }}</span>
-                    </button>
-                </form>
-
-                <form method="POST" action="{{ route('dev.login') }}">
-                    @csrf
-                    <input type="hidden" name="email" value="sophie@dearlyletters.com">
-                    <button type="submit" class="w-full p-2 bg-[#F6F0E5] hover:bg-[#E9DDC7] border border-[#D6C7AE] rounded text-left">
-                        <span class="font-bold text-[#342A25] block">Sophie Bordeaux</span>
-                        <span class="text-[9px] text-[#5A4A42]">{{ __('Astronomy • Age 26') }}</span>
-                    </button>
-                </form>
-
-                <form method="POST" action="{{ route('dev.login') }}">
-                    @csrf
-                    <input type="hidden" name="email" value="admin@dearlyletters.com">
-                    <input type="hidden" name="admin" value="1">
-                    <button type="submit" class="w-full p-2 bg-[#783C46]/10 hover:bg-[#783C46]/20 border border-[#783C46]/40 rounded text-left">
-                        <span class="font-bold text-[#783C46] block">{{ __('Chief Postmaster') }}</span>
-                        <span class="text-[9px] text-[#783C46]">{{ __('Super Admin Access') }}</span>
-                    </button>
-                </form>
-            </div>
-        </div>
     </div>
 </div>
 @endsection

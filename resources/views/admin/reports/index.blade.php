@@ -28,7 +28,8 @@
         </div>
     @else
         <div class="bg-white rounded-lg border border-[#E0D7D0] shadow-sm overflow-hidden">
-            <table class="w-full text-left text-xs">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left text-xs min-w-[680px]">
                 <thead class="bg-[#FAF6EE] border-b border-[#E0D7D0] text-[#8A7972] uppercase text-[10px] tracking-wider font-semibold">
                     <tr>
                         <th class="py-3 px-4">#</th>
@@ -75,6 +76,7 @@
                     @endforeach
                 </tbody>
             </table>
+            </div>
         </div>
 
         <div>

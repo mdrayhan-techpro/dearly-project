@@ -28,6 +28,7 @@ class QuestionnaireAndMatchingTest extends TestCase
 
         $this->seed(ApplicationSettingSeeder::class);
         $this->seed(QuestionnaireSeeder::class);
+        $this->seed(\Database\Seeders\QuestionnaireTranslationSeeder::class);
     }
 
     public function test_user_can_view_questionnaire_length_choices(): void
@@ -62,6 +63,30 @@ class QuestionnaireAndMatchingTest extends TestCase
             'questionnaire_length' => 20,
             'is_completed' => false,
         ]);
+    }
+
+    public function test_user_can_view_localized_questionnaire_in_bengali_and_other_languages(): void
+    {
+        $user = User::factory()->create();
+        UserProfile::factory()->create(['user_id' => $user->id, 'is_onboarded' => true]);
+
+        $this->actingAs($user);
+
+        // Switch locale to Bengali
+        $this->get('/locale/bn');
+        $response = $this->get('/questionnaire/20');
+        $response->assertStatus(200);
+        $response->assertSee('প্রশ্ন 1 এর মধ্যে 20');
+        $response->assertSee('উত্তরগুলো সিলমোহর করতে প্রস্তুত?');
+        $response->assertSee('জমা দিন ও বন্ধু খুঁজুন');
+
+        // Switch locale to Hindi
+        $this->get('/locale/hi');
+        $responseHi = $this->get('/questionnaire/20');
+        $responseHi->assertStatus(200);
+        $responseHi->assertSee('प्रश्न 1 में से 20');
+        $responseHi->assertSee('अपने उत्तरों को सील करने के लिए तैयार हैं?');
+        $responseHi->assertSee('जमा करें और मित्र खोजें');
     }
 
     public function test_user_can_autosave_questionnaire_answer_via_ajax(): void

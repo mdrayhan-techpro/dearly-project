@@ -8,10 +8,17 @@
         <!-- Top Profile Info -->
         <div class="flex flex-col sm:flex-row justify-between items-start gap-4 border-b border-[#E0D7D0] pb-6">
             <div>
-                <h2 class="font-serif text-2xl font-bold text-[#2D2420]">{{ $user->name }}</h2>
-                <p class="text-xs text-[#8A7972] mt-0.5">Pen-Name: <strong class="text-[#783C46]">{{ $user->nickname }}</strong> • Internal ID #{{ $user->id }}</p>
-                <p class="text-xs text-[#8A7972]">Private Email: <span class="font-mono text-[#2D2420]">{{ $user->email }}</span></p>
+                @if(auth()->user()->role === 'moderator')
+                    <h2 class="font-serif text-2xl font-bold text-[#2D2420]">{{ Str::mask($user->name, '*', 2) }}</h2>
+                    <p class="text-xs text-[#8A7972] mt-0.5">Pen-Name: <strong class="text-[#783C46]">{{ $user->nickname }}</strong> • Internal ID #{{ $user->id }}</p>
+                    <p class="text-xs text-[#8A7972]">Private Email: <span class="font-mono text-[#2D2420]">{{ Str::mask($user->email, '*', 2, 6) }}</span> <span class="text-[10px] bg-amber-100 text-amber-800 px-1 rounded ml-1">Shielded</span></p>
+                @else
+                    <h2 class="font-serif text-2xl font-bold text-[#2D2420]">{{ $user->name }}</h2>
+                    <p class="text-xs text-[#8A7972] mt-0.5">Pen-Name: <strong class="text-[#783C46]">{{ $user->nickname }}</strong> • Internal ID #{{ $user->id }}</p>
+                    <p class="text-xs text-[#8A7972]">Private Email: <span class="font-mono text-[#2D2420]">{{ $user->email }}</span></p>
+                @endif
             </div>
+
 
             <div class="text-right">
                 <span class="inline-block px-3 py-1 rounded-full text-xs font-bold {{ $user->is_suspended ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' }}">

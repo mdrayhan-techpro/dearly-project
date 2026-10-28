@@ -86,6 +86,12 @@ class AuthController extends Controller
      */
     public function devLogin(Request $request): RedirectResponse
     {
+        abort_unless(
+            app()->environment('local', 'testing'),
+            403,
+            'Developer quick-login is disabled in this environment.'
+        );
+
         $email = $request->input('email');
         $user = User::where('email', $email)->first();
 

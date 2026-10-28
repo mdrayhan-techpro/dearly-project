@@ -4,6 +4,10 @@
 @tailwind components;
 @tailwind utilities;
 
+[x-cloak] {
+    display: none !important;
+}
+
 @layer base {
     body {
         @apply bg-[#F6F0E5] text-[#342A25] font-sans antialiased min-h-screen selection:bg-[#783C46] selection:text-white;
@@ -87,6 +91,13 @@
 [dir="rtl"] {
     text-align: right;
 }
+[dir="rtl"] body {
+    font-family: 'Amiri', 'Traditional Arabic', 'Inter', sans-serif;
+}
+[dir="rtl"] h1, [dir="rtl"] h2, [dir="rtl"] h3, [dir="rtl"] h4, [dir="rtl"] .font-serif {
+    font-family: 'Amiri', 'Playfair Display', Georgia, serif;
+}
 [dir="rtl"] .postal-mark {
     transform: rotate(12deg);
 }
+

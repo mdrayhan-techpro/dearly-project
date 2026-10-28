@@ -188,4 +188,28 @@ class AuthTest extends TestCase
         $response->assertRedirect('/');
         $this->assertGuest();
     }
+
+    public function test_dev_login_is_forbidden_in_production(): void
+    {
+        $this->withoutMiddleware(\Illuminate\Foundation\Http\Middleware\ValidateCsrfToken::class);
+        $this->app['env'] = 'production';
+
+        $response = $this->post('/dev-login', [
+            'email' => 'admin@dearlyletters.com',
+            'admin' => 1,
+        ]);
+
+        $response->assertStatus(403);
+        $this->assertGuest();
+    }
+
+    public function test_login_page_hides_test_personas_in_production(): void
+    {
+        $this->app['env'] = 'production';
+
+        $response = $this->get('/login');
+        $response->assertStatus(200);
+        $response->assertDontSee('Instant Test Personas');
+        $response->assertDontSee('Chief Postmaster');
+    }
 }

@@ -22,10 +22,13 @@ class LetterReadMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $recipientNickname = $this->letter->recipient->profile->nickname ?? 'Your Pen-Pal';
+        $locale = $this->senderUser->profile->preferred_language ?? 'en';
+        $this->locale($locale);
+
+        $recipientNickname = $this->letter->recipient->profile->nickname ?? __('Your Pen-Pal', [], $locale);
 
         return new Envelope(
-            subject: 'Dearly — '.$recipientNickname.' Broke the Seal on Your Letter',
+            subject: __('Dearly — :name Broke the Seal on Your Letter', ['name' => $recipientNickname], $locale),
         );
     }
 

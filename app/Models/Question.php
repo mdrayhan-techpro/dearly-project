@@ -15,16 +15,38 @@ class Question extends Model
         'questionnaire_id',
         'dimension',
         'question_text',
+        'translations',
         'weight',
         'is_active',
         'order_index',
     ];
 
     protected $casts = [
+        'translations' => 'array',
         'weight' => 'decimal:2',
         'is_active' => 'boolean',
         'order_index' => 'integer',
     ];
+
+    public function getQuestionTextAttribute(?string $value): string
+    {
+        $locale = app()->getLocale();
+        if ($locale !== 'en' && !empty($this->translations[$locale])) {
+            return $this->translations[$locale];
+        }
+
+        return $value ?? '';
+    }
+
+    public function getLocalizedQuestionText(?string $locale = null): string
+    {
+        $locale = $locale ?: app()->getLocale();
+        if ($locale !== 'en' && !empty($this->translations[$locale])) {
+            return $this->translations[$locale];
+        }
+
+        return $this->attributes['question_text'] ?? '';
+    }
 
     public function questionnaire(): BelongsTo
     {

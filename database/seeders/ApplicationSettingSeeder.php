@@ -392,8 +392,138 @@ class ApplicationSettingSeeder extends Seeder
                 ]),
                 'type' => 'json'
             ],
+            [
+                'key' => 'faqs_hi',
+                'value' => json_encode([
+                    [
+                        'q' => 'डियरली किसी त्वरित संदेश (इंस्टेंट मैसेजिंग) ऐप या ईमेल से कैसे भिन्न है?',
+                        'a' => 'डियरली को जानबूझकर शांत और धीमा बनाया गया है। यहाँ पत्रों को यात्रा करने और पहुँचने में स्वाभाविक समय लगता है। कोई ऑनलाइन प्रेजेंस डॉट्स, टाइपिंग इंडिकेटर या तुरंत उत्तर देने का दबाव नहीं है। प्रत्येक पत्र सुंदर विंटेज स्टेशनरी पर तैयार किया जाता है, लिफाफे में बंद किया जाता है और डिजिटल मोम की मुहर से सील किया जाता है।'
+                    ],
+                    [
+                        'q' => 'क्या मेरा व्यक्तिगत ईमेल पता या असली नाम अन्य उपयोगकर्ताओं को दिखाई देता है?',
+                        'a' => 'कभी नहीं। डियरली सख्त गोपनीयता मानकों का पालन करता है। अन्य सदस्यों को केवल आपका चुना हुआ उपनाम, आयु वर्ग और साझा रुचियां ही दिखाई देती हैं। पत्र केवल अद्वितीय निजी डाक कोड (जैसे DEARLY-7K9M-2Q8P) के माध्यम से भेजे जाते हैं।'
+                    ],
+                    [
+                        'q' => 'मित्रता और व्यक्तित्व अनुकूलता एल्गोरिदम कैसे काम करता है?',
+                        'a' => 'आप 17 व्यक्तित्व और जीवनशैली आयामों को कवर करने वाली 20, 30, 40 या 50 प्रश्नों की खोज प्रश्नावली चुनते हैं। हमारा सर्वर-साइड वेटेड एल्गोरिदम 90% या उससे अधिक अनुकूलता वाले समान विचारधारा वाले मित्रों को खोजता है।'
+                    ],
+                    [
+                        'q' => 'दैनिक पत्र भेजने की सीमा क्या है?',
+                        'a' => 'पत्रों की आत्मीयता बनाए रखने और स्पैम को रोकने के लिए, उपयोगकर्ता प्रति दिन अधिकतम 5 पत्र भेज सकते हैं, जिसमें प्रति दिन अधिकतम 2 नए पेन-पाल परिचय शामिल हैं।'
+                    ],
+                    [
+                        'q' => 'क्या पढ़े जाने की पुष्टि (Read Receipts) वास्तविक है या स्वचालित?',
+                        'a' => 'पढ़े जाने की पुष्टि पूरी तरह प्रामाणिक है: यह केवल तभी दर्ज होती है जब अधिकृत प्राप्तकर्ता अपने डियरली डाकघर में आपके पत्र का मोम का सील तोड़कर उसे वास्तव में पढ़ता है।'
+                    ],
+                ]),
+                'type' => 'json'
+            ],
+            [
+                'key' => 'faqs_ar',
+                'value' => json_encode([
+                    [
+                        'q' => 'كيف تختلف منصة ديرلي عن تطبيقات المراسلة الفورية أو البريد الإلكتروني التقليدي؟',
+                        'a' => 'ديرلي منصة هادئة ومتمهلة عن قصد. تحتاج الرسائل وقتاً لتسافر وتصل. لا توجد مؤشرات اتصال خضراء، ولا نقاط كتابة، ولا ضغوط للرد الفوري. تُصاغ كل رسالة على ورق قرطاسية عتيق، وتوضع في مظروف يحمل طوابع بريدية قابلة للجمع، وتُختم بشمع رقمي دافئ.'
+                    ],
+                    [
+                        'q' => 'هل يظهر بريدي الإلكتروني الشخصي أو اسمي الحقيقي للمستخدمين الآخرين؟',
+                        'a' => 'أبداً. تلتزم ديرلي بأقصى درجات الخصوصية التامة. لا يرى الأعضاء الآخرون سوى اسمك المستعار المختار، وفئتك العمرية التقريبية، واهتماماتك المشتركة. تُرسل الرسائل باستخدام رموز بريدية خاصة وفريدة (مثل DEARLY-7K9M-2Q8P).'
+                    ],
+                    [
+                        'q' => 'كيف تعمل خوارزمية التوافق والتعارف بين الأصدقاء؟',
+                        'a' => 'تشارك في استبيان استكشافي مكون من 20 أو 30 أو 40 أو 50 سؤالاً يغطي 17 بعداً شخصياً وفكرياً. تقارن خوارزميتنا الموزونة إجاباتك للعثور على أرواح متقاربة بنسبة توافق 90% أو أكثر.'
+                    ],
+                    [
+                        'q' => 'ما هو الحد اليومي لإرسال الرسائل البريدية؟',
+                        'a' => 'للحفاظ على عمق المراسلة وصدقها ومنع الرسائل العشوائية، يمكن إرسال ما يصل إلى 5 رسائل يومياً، بحد أقصى تعارفين جديدين في اليوم الواحد.'
+                    ],
+                    [
+                        'q' => 'هل إشعارات قراءة الرسائل حقيقية أم تلقائية؟',
+                        'a' => 'إشعارات القراءة حقيقية وأصيلة تماماً؛ يتم تفعيلها فقط عندما يقوم المستلم المعتمد بفض ختم الشمع وفتح الرسالة فعلياً داخل مكتب بريد ديرلي الخاص به.'
+                    ],
+                ]),
+                'type' => 'json'
+            ],
+            [
+                'key' => 'faqs_es',
+                'value' => json_encode([
+                    [
+                        'q' => '¿En qué se diferencia Dearly de una app de mensajería instantánea o del correo convencional?',
+                        'a' => 'Dearly es intencionalmente pausada. Las cartas toman tiempo para viajar y entregarse. No existen indicadores de "en línea", puntos de escritura ni urgencia por responder al instante. Cada carta se redacta en hermosa papelería digital vintage, dentro de un sobre con sellos coleccionables y sellada con lacre virtual.'
+                    ],
+                    [
+                        'q' => '¿Es visible mi correo electrónico personal o mi nombre real para otros usuarios?',
+                        'a' => 'Bajo ninguna circunstancia. Dearly aplica privacidad rigurosa por diseño. Los demás miembros únicamente pueden ver tu apodo público, tu rango de edad aproximado y tus intereses compartidos. Las cartas se intercambian a través de códigos postales privados únicos (ej. DEARLY-7K9M-2Q8P).'
+                    ],
+                    [
+                        'q' => '¿Cómo funciona el algoritmo de compatibilidad entre amigos por correspondencia?',
+                        'a' => 'Completas un cuestionario de descubrimiento de 20, 30, 40 o 50 preguntas que abarca 17 dimensiones de personalidad y estilo de vida. Nuestro algoritmo compara tus respuestas para conectarte con almas afines con un 90% o más de compatibilidad.'
+                    ],
+                    [
+                        'q' => '¿Cuál es el límite diario de envío de cartas?',
+                        'a' => 'Para preservar el valor reflexivo de la correspondencia y evitar el correo no deseado, cada usuario puede despachar hasta 5 cartas al día, con un máximo de 2 nuevas presentaciones por jornada.'
+                    ],
+                    [
+                        'q' => '¿Son auténticas o simuladas las confirmaciones de lectura?',
+                        'a' => 'Las confirmaciones de lectura son estrictamente auténticas: se registran solo cuando el destinatario legítimo rompe el sello de cera y despliega la carta en su oficina postal de Dearly.'
+                    ],
+                ]),
+                'type' => 'json'
+            ],
+            [
+                'key' => 'faqs_fr',
+                'value' => json_encode([
+                    [
+                        'q' => 'En quoi Dearly diffère-t-il d\'une application de messagerie instantanée ou d\'un e-mail ?',
+                        'a' => 'Dearly est délibérément lent et apaisant. Les lettres prennent du temps pour voyager. Il n\'y a ni indicateur de présence en ligne, ni points de frappe, ni pression pour répondre sur-le-champ. Chaque lettre est composée sur du papier à lettres d\'époque, glissée dans une enveloppe affranchie de timbres de collection et scellée à la cire numérique.'
+                    ],
+                    [
+                        'q' => 'Mon adresse e-mail personnelle ou mon vrai nom sont-ils visibles pour les autres membres ?',
+                        'a' => 'Jamais. Dearly applique une politique de confidentialité stricte dès la conception. Les autres membres ne voient que votre pseudonyme choisi, votre tranche d\'âge et vos centres d\'intérêt partagés. Les lettres s\'échangent via des codes postaux privés uniques (ex. DEARLY-7K9M-2Q8P).'
+                    ],
+                    [
+                        'q' => 'Comment fonctionne l\'algorithme d\'affinité épistolaire ?',
+                        'a' => 'Vous répondez à un questionnaire de découverte de 20, 30, 40 ou 50 questions couvrant 17 dimensions de personnalité et d\'intérêts. Notre algorithme côté serveur compare vos réponses pour identifier des esprits complices avec un score de compatibilité de 90 % ou plus.'
+                    ],
+                    [
+                        'q' => 'Quelle est la limite quotidienne d\'envoi de lettres ?',
+                        'a' => 'Pour préserver l\'authenticité des échanges et prévenir le spam, chaque membre peut envoyer jusqu\'à 5 lettres par jour, avec un maximum de 2 nouvelles prises de contact quotidiennes.'
+                    ],
+                    [
+                        'q' => 'Les accusés de lecture sont-ils réels ou automatiques ?',
+                        'a' => 'Les accusés de lecture sont authentiques : ils ne sont déclenchés que lorsque le destinataire légitime brise le cachet de cire et ouvre réellement votre lettre dans son bureau de poste Dearly.'
+                    ],
+                ]),
+                'type' => 'json'
+            ],
+            [
+                'key' => 'faqs_pt',
+                'value' => json_encode([
+                    [
+                        'q' => 'Como o Dearly se diferencia de um aplicativo de mensagens instantâneas ou e-mail comum?',
+                        'a' => 'O Dearly é intencionalmente calmo e pausado. As cartas levam tempo para viajar. Não há luzes de status online, pontos de digitação nem pressa para responder. Cada carta é escrita em elegante papel de carta vintage, acomodada em envelope com selos colecionáveis e lacrada com cera digital.'
+                    ],
+                    [
+                        'q' => 'Meu e-mail pessoal ou nome verdadeiro ficam visíveis para outros usuários?',
+                        'a' => 'De forma alguma. O Dearly adota privacidade rigorosa por princípio. Os outros membros só visualizam seu pseudônimo escolhido, faixa etária aproximada e interesses em comum. As correspondências ocorrem por meio de códigos postais privados exclusivos (ex.: DEARLY-7K9M-2Q8P).'
+                    ],
+                    [
+                        'q' => 'Como funciona o algoritmo de compatibilidade de correspondentes?',
+                        'a' => 'Você responde a um questionário de 20, 30, 40 ou 50 perguntas que explora 17 dimensões de personalidade e estilo de vida. Nosso algoritmo compara suas respostas para encontrar almas afins com 90% ou mais de compatibilidade.'
+                    ],
+                    [
+                        'q' => 'Qual é o limite diário de envio de cartas?',
+                        'a' => 'Para preservar o carinho e o cuidado nas palavras e impedir o spam, cada usuário pode despachar até 5 cartas por dia, com no máximo 2 apresentações a novos correspondentes diárias.'
+                    ],
+                    [
+                        'q' => 'As confirmações de leitura são reais ou automáticas?',
+                        'a' => 'As confirmações de leitura são autênticas: elas só são registradas quando o destinatário quebra o lacre de cera e realmente abre a carta em sua agência postal Dearly.'
+                    ],
+                ]),
+                'type' => 'json'
+            ],
 
-            // Base Policy Defaults
+            // Base Policy Defaults — Community Guidelines
             [
                 'key' => 'community_guidelines_en',
                 'value' => "### The Dearly Post Office Community Guidelines\n\n1. **Kindness & Courtesy**: Treat every correspondent with dignity, empathy, and respect.\n2. **Slow Correspondence**: Understand that life moves in seasons; respect your pen friends' response rhythms without pressure.\n3. **Privacy First**: Do not pressure others to reveal personal contact details, physical addresses, or external social media profiles.\n4. **Zero Tolerance for Abuse**: Harassment, hate speech, spam, unsolicited commercial advertisements, and inappropriate content result in immediate account suspension.",
@@ -405,6 +535,33 @@ class ApplicationSettingSeeder extends Seeder
                 'type' => 'string'
             ],
             [
+                'key' => 'community_guidelines_hi',
+                'value' => "### डियरली डाकघर समुदाय दिशानिर्देश\n\n१. **सौहार्द और शिष्टाचार**: प्रत्येक पत्र-मित्र के साथ सम्मान, सहानुभूति और गरिमापूर्ण व्यवहार करें।\n२. **धीमा पत्राचार**: समझें कि जीवन की अपनी स्वाभाविक गति होती है; बिना किसी दबाव के अपने मित्रों के जवाब देने की लय का सम्मान करें।\n३. **गोपनीयता सर्वोपरि**: दूसरों पर व्यक्तिगत संपर्क विवरण, भौतिक पता या सोशल मीडिया प्रोफाइल साझा करने का दबाव न बनाएं।\n४. **दुर्व्यवहार के प्रति शून्य सहिष्णुता**: उत्पीड़न, अभद्र भाषा, स्पैम, अवांछित व्यावसायिक विज्ञापन और अनुचित सामग्री पाए जाने पर खाता तुरंत निलंबित कर दिया जाएगा।",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'community_guidelines_ar',
+                'value' => "### ميثاق مجتمع مكتب بريد ديرلي\n\n١. **اللطف والاحترام**: تعامل مع كل صديق مراسلة بكرامة وتقدير وتعاطف صادق.\n٢. **المراسلة الهادئة**: لكل إنسان وتيرة حياته وظروفه الخاصة؛ احترم أوقات أصدقائك في الرد دون ممارسة أي ضغوط.\n٣. **الخصوصية أولاً**: تجنب تماماً مطالبة الآخرين بوسائل تواصل شخصية، أو عناوين إقامتهم الفعلية، أو حساباتهم في وسائل التواصل الاجتماعي.\n٤. **عدم التسامح مع الإساءة**: المضايقات، وخطاب الكراهية، والرسائل الإعلانية غير المرغوبة، والمحتوى غير اللائق تؤدي فوراً إلى حظر الحساب نهائياً.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'community_guidelines_es',
+                'value' => "### Directrices de la Comunidad Postal de Dearly\n\n1. **Amabilidad y Cortesía**: Trata a cada amigo por correspondencia con dignidad, empatía y profundo respeto.\n2. **Correspondencia Pausada**: Comprende que la vida transcurre a su propio compás; respeta el ritmo de respuesta de tus amigos sin presiones.\n3. **Privacidad Ante Todo**: No presiones a otros para que compartan datos de contacto personales, direcciones físicas o perfiles de redes sociales.\n4. **Tolerancia Cero al Abuso**: El acoso, el discurso de odio, el spam, la publicidad comercial no deseada y el contenido inapropiado conllevan la suspensión inmediata de la cuenta.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'community_guidelines_fr',
+                'value' => "### Charte de la Communauté du Bureau de Poste Dearly\n\n1. **Bienveillance et Courtoisie** : Traitez chaque correspondant avec dignité, empathie et le plus grand respect.\n2. **Correspondance Paisible** : La vie a ses propres saisons ; respectez le rythme de réponse de vos correspondants sans exercer de pression.\n3. **Priorité à la Confidentialité** : Ne sollicitez pas les coordonnées privées, adresses physiques ou réseaux sociaux de vos correspondants.\n4. **Tolérance Zéro pour les Abus** : Le harcèlement, les propos haineux, le spam, les sollicitations commerciales et les contenus inappropriés entraînent la suspension immédiate du compte.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'community_guidelines_pt',
+                'value' => "### Diretrizes da Comunidade Postal Dearly\n\n1. **Gentileza e Respeito**: Trate cada amigo correspondente com dignidade, empatia e cordialidade genuína.\n2. **Correspondência no Seu Tempo**: A vida tem estações próprias; respeite o ritmo de resposta dos seus correspondentes sem cobranças.\n3. **Privacidade em Primeiro Lugar**: Não pressione outros membros a revelar contatos externos, endereços físicos ou redes sociais.\n4. **Tolerância Zero a Abusos**: Assédio, discurso de ódio, spam, anúncios comerciais e conteúdos impróprios resultam em suspensão imediata da conta.",
+                'type' => 'string'
+            ],
+
+            // Base Policy Defaults — Privacy Policy
+            [
                 'key' => 'privacy_policy_en',
                 'value' => "### Dearly Privacy Policy\n\nDearly is built on the fundamental principle that private correspondence should remain private.\n\n- We never sell, rent, or monetize your personal correspondence or demographic data.\n- We do not reveal your email address, Google account information, or real name to other users.\n- Letters are encrypted in transit and isolated in storage strictly to the sender and intended recipient.\n- You may request data export or complete account deletion at any time through account settings.",
                 'type' => 'string'
@@ -415,6 +572,33 @@ class ApplicationSettingSeeder extends Seeder
                 'type' => 'string'
             ],
             [
+                'key' => 'privacy_policy_hi',
+                'value' => "### डियरली गोपनीयता नीति\n\nडियरली इस मौलिक सिद्धांत पर स्थापित है कि निजी पत्राचार हमेशा निजी ही रहना चाहिए।\n\n- हम आपके व्यक्तिगत पत्राचार या जनसांख्यिकीय डेटा को कभी भी बेचते, किराए पर देते या व्यावसायिक रूप से उपयोग नहीं करते हैं।\n- हम आपका व्यक्तिगत ईमेल पता, गूगल खाता विवरण या असली नाम अन्य उपयोगकर्ताओं के सामने कभी प्रकट नहीं करते।\n- सभी पत्र पारगमन में एन्क्रिप्टेड होते हैं और केवल प्रेषक तथा अभीष्ट प्राप्तकर्ता के लिए सुरक्षित रहते हैं।\n- आप किसी भी समय अपनी सेटिंग्स से अपना डेटा निर्यात कर सकते हैं या खाता पूरी तरह हटा सकते हैं।",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'privacy_policy_ar',
+                'value' => "### سياسة خصوصية ديرلي\n\nتأسست ديرلي على مبدأ راسخ هو أن المراسلات الخاصة يجب أن تظل خاصة ومحمية دائماً.\n\n- لا نقوم مطلقاً ببيع، أو تأجير، أو استغلال رسائلك أو بياناتك الشخصية لأي أغراض تجارية.\n- لا نكشف أبداً عن بريدك الإلكتروني الشخصي، أو معلومات حساب جوجل، أو اسمك الحقيقي للمستخدمين الآخرين.\n- جميع الرسائل مشفرة أثناء الإرسال ومحفوظة بسرية تامة تقتصر فقط على المرسل والمستلم المقصود.\n- يمكنك في أي وقت تصدير بياناتك أو حذف حسابك وسجلاتك نهائياً من خلال الإعدادات.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'privacy_policy_es',
+                'value' => "### Política de Privacidad de Dearly\n\nDearly se fundamenta en el principio inquebrantable de que la correspondencia privada debe permanecer estrictamente privada.\n\n- Nunca vendemos, alquilamos ni comercializamos tus cartas privadas ni tus datos demográficos.\n- No revelamos tu correo electrónico personal, tu cuenta de Google ni tu nombre real a otros usuarios.\n- Las cartas se cifran en tránsito y se conservan de forma aislada exclusivamente para el remitente y el destinatario legítimo.\n- Puedes solicitar la exportación de tus datos o la eliminación completa de tu cuenta en cualquier momento desde la configuración.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'privacy_policy_fr',
+                'value' => "### Politique de Confidentialité de Dearly\n\nDearly repose sur le principe fondamental selon lequel la correspondance intime doit toujours demeurer strictement privée.\n\n- Nous ne vendons, ne louons et ne monétisons jamais vos lettres personnelles ni vos données démographiques.\n- Nous ne divulguons jamais votre adresse e-mail personnelle, votre compte Google ou votre nom d'état civil aux autres membres.\n- Toutes les lettres sont chiffrées en transit et strictement confinées à l'expéditeur et au destinataire prévu.\n- Vous pouvez à tout moment exporter l'ensemble de vos données ou supprimer définitivement votre compte depuis les paramètres.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'privacy_policy_pt',
+                'value' => "### Política de Privacidade Dearly\n\nO Dearly foi concebido sobre o princípio inegociável de que correspondências íntimas devem permanecer estritamente particulares.\n\n- Jamais vendemos, alugamos ou monetizamos suas cartas pessoais ou dados de perfil.\n- Não exibimos seu e-mail pessoal, sua conta do Google ou seu nome civil para os demais usuários.\n- Todas as cartas são criptografadas em trânsito e isoladas estritamente entre o remetente e o destinatário autorizado.\n- Você pode exportar seus dados ou solicitar a exclusão definitiva da sua conta a qualquer instante nas configurações.",
+                'type' => 'string'
+            ],
+
+            // Base Policy Defaults — Terms of Service
+            [
                 'key' => 'terms_of_service_en',
                 'value' => "### Dearly Terms of Service\n\nBy accessing Dearly, you agree to:\n\n- Be at least 18 years of age.\n- Use the platform solely for peaceful, personal correspondence.\n- Abide by community guidelines and daily postal sending limits.\n- Respect recipient privacy and refrain from automated scraping or bulk unsolicited dispatch.",
                 'type' => 'string'
@@ -422,6 +606,31 @@ class ApplicationSettingSeeder extends Seeder
             [
                 'key' => 'terms_of_service_bn',
                 'value' => "### ডিয়ারলি ব্যবহারের শর্তাবলী\n\nডিয়ারলি ব্যবহার করার মাধ্যমে আপনি সম্মত হচ্ছেন যে:\n\n- আপনার বয়স কমপক্ষে ১৮ বছর হতে হবে।\n- প্ল্যাটফর্মটি কেবল শান্ত ও ব্যক্তিগত পত্রবিনিময়ের জন্য ব্যবহার করবেন।\n- কমিউনিটি নির্দেশিকা ও দৈনিক চিঠি পাঠানোর নিয়ম মেনে চলবেন।\n- প্রাপকের গোপনীয়তাকে সম্মান করবেন এবং স্বয়ংক্রিয় স্ক্র্যাপিং বা অনাকাঙ্ক্ষিত গণ-বার্তা পাঠানো থেকে বিরত থাকবেন।",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'terms_of_service_hi',
+                'value' => "### डियरली सेवा की शर्तें\n\nडियरली का उपयोग करके, आप निम्नलिखित पर सहमति व्यक्त करते हैं:\n\n- आपकी आयु कम से कम १८ वर्ष होनी चाहिए।\n- प्लेटफ़ॉर्म का उपयोग केवल शांतिपूर्ण और व्यक्तिगत पत्राचार के लिए किया जाएगा।\n- समुदाय दिशानिर्देशों और दैनिक डाक प्रेषण सीमाओं का पालन करेंगे।\n- प्राप्तकर्ता की गोपनीयता का सम्मान करेंगे और स्वचालित स्क्रैपिंग या अनचाहे बल्क संदेश भेजने से दूर रहेंगे।",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'terms_of_service_ar',
+                'value' => "### شروط خدمة ديرلي\n\nمن خلال دخولك واستخدامك لمنصة ديرلي، فإنك توافق على الالتزام بما يلي:\n\n- أن يكون عمرك ۱۸ عاماً على الأقل.\n- استخدام المنصة حصرياً للمراسلات الودية والشخصية الهادئة.\n- الالتزام التام بإرشادات المجتمع والحدود اليومية المحددة لإرسال البريد.\n- احترام خصوصية الطرف الآخر والامتناع التام عن استخدام أدوات الكشط الآلي أو إرسال الرسائل الجماعية غير المرغوب فيها.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'terms_of_service_es',
+                'value' => "### Términos de Servicio de Dearly\n\nAl acceder y utilizar Dearly, aceptas comprometerte a:\n\n- Tener al menos 18 años de edad cumplidos.\n- Emplear la plataforma con el único propósito de mantener correspondencia personal, pacífica y reflexiva.\n- Acatar fielmente las directrices comunitarias y los límites postales diarios de envío.\n- Respetar la intimidad de los destinatarios y abstenerse de recopilación automatizada de datos o envíos masivos no deseados.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'terms_of_service_fr',
+                'value' => "### Conditions Générales d'Utilisation de Dearly\n\nEn accédant à Dearly et en utilisant ses services, vous convenez de :\n\n- Être âgé d'au moins 18 ans révolus.\n- Utiliser la plateforme dans le seul dessein d'une correspondance personnelle, pacifique et authentique.\n- Vous conformer à la charte communautaire et aux plafonds quotidiens d'envoi postal.\n- Respecter la sphère privée de vos destinataires et vous abstenir de tout archivage automatisé ou démarchage massif non sollicité.",
+                'type' => 'string'
+            ],
+            [
+                'key' => 'terms_of_service_pt',
+                'value' => "### Termos de Serviço Dearly\n\nAo acessar e usufruir do Dearly, você concorda com o seguinte:\n\n- Ter idade mínima de 18 anos.\n- Utilizar a plataforma exclusivamente para correspondência mútua, pacífica e afetuosa.\n- Cumprir integralmente as diretrizes comunitárias e os limites diários de despacho de correspondências.\n- Respeitar o espaço e a privacidade dos destinatários, abstendo-se de coletas automatizadas de dados ou envios em massa.",
                 'type' => 'string'
             ],
         ];

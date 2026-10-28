@@ -103,4 +103,111 @@ class LocalizationAndEditorialContentTest extends TestCase
         $this->assertEquals('বাংলায় নতুন শিরোনাম', ApplicationSetting::getLocalized('about_heading', 'bn'));
         $this->assertEquals('Título en Español', ApplicationSetting::getLocalized('about_heading', 'es'));
     }
+
+    public function test_all_seven_languages_render_localized_policies_and_faqs(): void
+    {
+        $this->seed(\Database\Seeders\ApplicationSettingSeeder::class);
+
+        $locales = ['en', 'bn', 'hi', 'ar', 'es', 'fr', 'pt'];
+
+        foreach ($locales as $locale) {
+            // 1. Privacy Policy
+            $resPrivacy = $this->withSession(['locale' => $locale])->get(route('privacy'));
+            $resPrivacy->assertStatus(200);
+
+            // 2. Terms of Service
+            $resTerms = $this->withSession(['locale' => $locale])->get(route('terms'));
+            $resTerms->assertStatus(200);
+
+            // 3. Community Guidelines
+            $resGuidelines = $this->withSession(['locale' => $locale])->get(route('guidelines'));
+            $resGuidelines->assertStatus(200);
+
+            // 4. FAQ
+            $resFaq = $this->withSession(['locale' => $locale])->get(route('faq'));
+            $resFaq->assertStatus(200);
+
+            // Verify that content is actually localized in DB
+            $policyText = ApplicationSetting::getLocalized('privacy_policy', $locale);
+            $this->assertNotEmpty($policyText);
+
+            $termsText = ApplicationSetting::getLocalized('terms_of_service', $locale);
+            $this->assertNotEmpty($termsText);
+
+            $guidelinesText = ApplicationSetting::getLocalized('community_guidelines', $locale);
+            $this->assertNotEmpty($guidelinesText);
+
+            $faqs = ApplicationSetting::getLocalized('faqs', $locale);
+            $this->assertIsArray($faqs);
+            $this->assertCount(5, $faqs);
+        }
+    }
+
+    public function test_form_validation_returns_localized_error_messages(): void
+    {
+        // 1. Bengali validation error
+        $resBn = $this->withSession(['locale' => 'bn'])
+            ->post(route('login.submit'), []);
+        $resBn->assertSessionHasErrors(['email', 'password']);
+        $errorsBn = session('errors')->getBag('default');
+        $this->assertStringContainsString('পূরণ করা আবশ্যক', $errorsBn->first('email'));
+
+        // 2. Hindi validation error
+        $resHi = $this->withSession(['locale' => 'hi'])
+            ->post(route('login.submit'), []);
+        $resHi->assertSessionHasErrors(['email', 'password']);
+        $errorsHi = session('errors')->getBag('default');
+        $this->assertStringContainsString('अनिवार्य', $errorsHi->first('email'));
+
+        // 3. Arabic validation error
+        $resAr = $this->withSession(['locale' => 'ar'])
+            ->post(route('login.submit'), []);
+        $resAr->assertSessionHasErrors(['email', 'password']);
+        $errorsAr = session('errors')->getBag('default');
+        $this->assertStringContainsString('مطلوب', $errorsAr->first('email'));
+
+        // 4. Spanish validation error
+        $resEs = $this->withSession(['locale' => 'es'])
+            ->post(route('login.submit'), []);
+        $resEs->assertSessionHasErrors(['email', 'password']);
+        $errorsEs = session('errors')->getBag('default');
+        $this->assertStringContainsString('obligatorio', $errorsEs->first('email'));
+
+        // 5. French validation error
+        $resFr = $this->withSession(['locale' => 'fr'])
+            ->post(route('login.submit'), []);
+        $resFr->assertSessionHasErrors(['email', 'password']);
+        $errorsFr = session('errors')->getBag('default');
+        $this->assertStringContainsString('obligatoire', $errorsFr->first('email'));
+
+        // 6. Portuguese validation error
+        $resPt = $this->withSession(['locale' => 'pt'])
+            ->post(route('login.submit'), []);
+        $resPt->assertSessionHasErrors(['email', 'password']);
+        $errorsPt = session('errors')->getBag('default');
+        $this->assertStringContainsString('obrigatório', $errorsPt->first('email'));
+    }
+
+    public function test_arabic_rtl_layout_rendering_and_attributes(): void
+    {
+        $response = $this->withSession(['locale' => 'ar'])->get(route('home'));
+        $response->assertStatus(200);
+
+        // Assert html has lang="ar" and dir="rtl"
+        $response->assertSee('dir="rtl"', false);
+        $response->assertSee('lang="ar"', false);
+
+        // Assert localized Arabic navigation & branding are present
+        $response->assertSee('الرسائل تجد طريقها');
+        $response->assertSee('تسجيل الدخول');
+        $response->assertSee('الانضمام إلى مكتب البريد');
+
+        // Also test English has dir="ltr"
+        $responseEn = $this->withSession(['locale' => 'en'])->get(route('home'));
+        $responseEn->assertStatus(200);
+        $responseEn->assertSee('dir="ltr"', false);
+        $responseEn->assertSee('lang="en"', false);
+    }
 }
+
+

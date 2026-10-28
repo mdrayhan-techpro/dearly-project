@@ -1,4 +1,4 @@
-@extends('layouts.app', ['title' => "Discovery Questionnaire ({$length} Questions)"])
+@extends('layouts.app', ['title' => __('Discovery Questionnaire') . " ({$length} " . __('Questions') . ")"])
 
 @section('content')
 <div class="max-w-3xl mx-auto px-4 py-12"
@@ -20,7 +20,7 @@
         selectOption(questionId, optionId) {
             this.answers[questionId] = optionId;
             this.saving = true;
-            this.saveStatus = 'Saving answer...';
+            this.saveStatus = '{{ __('Saving answer...') }}';
 
             fetch('{{ route('discovery.save-answer') }}', {
                 method: 'POST',
@@ -37,12 +37,12 @@
             .then(res => res.json())
             .then(data => {
                 this.saving = false;
-                this.saveStatus = 'Autosaved ✓';
-                setTimeout(() => { if (this.saveStatus === 'Autosaved ✓') this.saveStatus = ''; }, 2000);
+                this.saveStatus = '{{ __('Autosaved ✓') }}';
+                setTimeout(() => { if (this.saveStatus === '{{ __('Autosaved ✓') }}') this.saveStatus = ''; }, 2000);
             })
             .catch(err => {
                 this.saving = false;
-                this.saveStatus = 'Error saving';
+                this.saveStatus = '{{ __('Error saving') }}';
             });
         }
     }">
@@ -52,7 +52,7 @@
         <div class="flex items-center justify-between text-xs font-semibold mb-2">
             <div class="flex items-center space-x-2">
                 <span class="font-serif text-sm font-bold text-[#342A25]">{{ $questionnaire->title }}</span>
-                <span class="text-[#783C46]" x-text="`${answeredCount} of ${totalQuestions} Answered`"></span>
+                <span class="text-[#783C46]" x-text="`${answeredCount} {{ __('of') }} ${totalQuestions} {{ __('Answered') }}`"></span>
             </div>
             <div class="flex items-center space-x-2">
                 <span class="text-[11px] text-[#405B4B]" x-text="saveStatus"></span>
@@ -73,9 +73,9 @@
         @foreach($questions as $index => $q)
             <div class="paper-sheet p-6 sm:p-8 rounded-xl border border-[#E9DDC7] shadow-paper space-y-4">
                 <div class="flex items-center justify-between border-b border-[#E9DDC7] pb-3">
-                    <span class="text-xs font-mono font-bold text-[#B79A61]">Question {{ $index + 1 }} of {{ $length }}</span>
+                    <span class="text-xs font-mono font-bold text-[#B79A61]">{{ __('Question') }} {{ $index + 1 }} {{ __('of') }} {{ $length }}</span>
                     <span class="text-[10px] uppercase tracking-wider text-[#783C46] font-semibold bg-[#783C46]/10 px-2 py-0.5 rounded">
-                        {{ ucwords(str_replace('_', ' ', $q->dimension)) }}
+                        {{ config('dearly.dimensions.' . $q->dimension, ucwords(str_replace('_', ' ', $q->dimension))) }}
                     </span>
                 </div>
 
@@ -110,9 +110,9 @@
         <!-- Final Submission Bar -->
         <div class="paper-sheet p-6 rounded-xl border border-[#E9DDC7] shadow-paper flex flex-col sm:flex-row items-center justify-between gap-4">
             <div>
-                <p class="font-serif text-sm font-bold text-[#342A25]">Ready to Seal Your Answers?</p>
+                <p class="font-serif text-sm font-bold text-[#342A25]">{{ __('Ready to Seal Your Answers?') }}</p>
                 <p class="text-xs text-[#5A4A42]">
-                    Once submitted, our compatibility algorithm will search the global directory for 90%+ kindred matches.
+                    {{ __('Once submitted, our compatibility algorithm will search the global directory for 90%+ kindred matches.') }}
                 </p>
             </div>
 
@@ -120,7 +120,7 @@
                 :disabled="answeredCount < totalQuestions"
                 class="w-full sm:w-auto px-8 py-3.5 text-xs font-semibold uppercase tracking-wider text-white rounded-md shadow-md transition-all"
                 :class="answeredCount >= totalQuestions ? 'bg-[#783C46] hover:bg-[#582A32] transform hover:-translate-y-0.5 cursor-pointer' : 'bg-gray-400 cursor-not-allowed opacity-60'">
-                Submit & Find Matches &rarr;
+                {{ __('Submit & Find Matches') }} &rarr;
             </button>
         </div>
     </form>

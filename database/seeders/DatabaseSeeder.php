@@ -11,11 +11,19 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        $this->call([
+        $seeders = [
             StationerySeeder::class,
             QuestionnaireSeeder::class,
+            QuestionnaireTranslationSeeder::class,
+            StationeryAndMailTranslationSeeder::class,
             ApplicationSettingSeeder::class,
-            AdminUserSeeder::class,
-        ]);
+        ];
+
+        // Seed demo personas and default test admin ONLY in local development or automated testing
+        if (app()->environment('local', 'testing')) {
+            $seeders[] = AdminUserSeeder::class;
+        }
+
+        $this->call($seeders);
     }
 }

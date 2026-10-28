@@ -17,6 +17,11 @@ class AdminUserSeeder extends Seeder
 {
     public function run(): void
     {
+        if (app()->isProduction()) {
+            $this->command?->warn('AdminUserSeeder is disabled in production to protect credentials. Use `php artisan dearly:create-admin` to create administrators.');
+            return;
+        }
+
         // 1. Create Super Administrator
         $admin = User::updateOrCreate(
             ['email' => 'admin@dearlyletters.com'],

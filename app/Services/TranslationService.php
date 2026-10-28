@@ -53,7 +53,8 @@ class TranslationService
     protected function translateChunk(string $chunk, string $targetLocale, string $sourceLocale = 'en'): string
     {
         try {
-            $response = Http::timeout(6)
+            $response = Http::timeout(10)
+                ->withoutVerifying()
                 ->withHeaders([
                     'User-Agent' => 'DearlyPostalSanctuary/1.0 (Laravel; Education/Non-Commercial)',
                 ])

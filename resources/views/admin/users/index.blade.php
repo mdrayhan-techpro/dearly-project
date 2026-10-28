@@ -35,7 +35,8 @@
 
     <!-- Users Table -->
     <div class="bg-white rounded-lg border border-[#E0D7D0] shadow-sm overflow-hidden">
-        <table class="w-full text-left text-xs">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-xs min-w-[680px]">
             <thead class="bg-[#FAF6EE] border-b border-[#E0D7D0] text-[#8A7972] uppercase text-[10px] tracking-wider font-semibold">
                 <tr>
                     <th class="py-3 px-4">User</th>
@@ -51,9 +52,15 @@
                 @foreach($users as $u)
                     <tr class="hover:bg-[#FAF6EE]/80 transition-colors">
                         <td class="py-3 px-4">
-                            <span class="font-bold text-[#2D2420] block">{{ $u->name }}</span>
-                            <span class="text-[10px] text-[#8A7972]">{{ $u->email }}</span>
+                            @if(auth()->user()->role === 'moderator')
+                                <span class="font-bold text-[#2D2420] block">{{ Str::mask($u->name, '*', 2) }}</span>
+                                <span class="text-[10px] text-[#8A7972] font-mono">{{ Str::mask($u->email, '*', 2, 6) }}</span>
+                            @else
+                                <span class="font-bold text-[#2D2420] block">{{ $u->name }}</span>
+                                <span class="text-[10px] text-[#8A7972]">{{ $u->email }}</span>
+                            @endif
                         </td>
+
                         <td class="py-3 px-4 font-semibold text-[#783C46]">
                             {{ $u->nickname }}
                         </td>
@@ -84,6 +91,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
     </div>
 
     <div>

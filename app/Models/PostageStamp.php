@@ -22,4 +22,15 @@ class PostageStamp extends Model
         'is_active' => 'boolean',
         'order_index' => 'integer',
     ];
+
+    public function getNameAttribute($value): string
+    {
+        return __($value ?? '');
+    }
+
+    public function letters(): \Illuminate\Database\Eloquent\Relations\HasMany
+    {
+        return $this->hasMany(Letter::class, 'postage_stamp_id');
+    }
 }
+

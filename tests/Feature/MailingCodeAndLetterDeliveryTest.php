@@ -28,6 +28,7 @@ class MailingCodeAndLetterDeliveryTest extends TestCase
 
         $this->seed(ApplicationSettingSeeder::class);
         $this->seed(StationerySeeder::class);
+        $this->seed(\Database\Seeders\StationeryAndMailTranslationSeeder::class);
     }
 
     public function test_user_can_view_mailing_code_page_and_copy_card(): void
@@ -303,5 +304,90 @@ class MailingCodeAndLetterDeliveryTest extends TestCase
         $this->actingAs($recipient);
         $readResponse = $this->get("/letters/{$letter->id}");
         $readResponse->assertStatus(200);
+    }
+
+    public function test_stationery_items_are_localized_across_languages(): void
+    {
+        $theme = StationeryTheme::where('slug', 'classic-ivory')->first();
+        $stamp = PostageStamp::where('slug', 'first-letter')->first();
+        $seal = WaxSeal::where('slug', 'postal-burgundy')->first();
+
+        // English default
+        app()->setLocale('en');
+        $this->assertEquals('Classic Ivory', $theme->name);
+        $this->assertEquals('First Letter Quill', $stamp->name);
+        $this->assertEquals('Royal Postal Burgundy', $seal->name);
+
+        // Bengali
+        app()->setLocale('bn');
+        $this->assertEquals('ক্লাসিক আইভরি', $theme->name);
+        $this->assertEquals('প্রথম পত্রের পালক', $stamp->name);
+        $this->assertEquals('রাজকীয় বার্গান্ডি', $seal->name);
+
+        // Hindi
+        app()->setLocale('hi');
+        $this->assertEquals('क्लासिक आइवरी', $theme->name);
+        $this->assertEquals('प्रथम पत्र पंख', $stamp->name);
+        $this->assertEquals('शाही डाक बरगंडी', $seal->name);
+
+        // Spanish
+        app()->setLocale('es');
+        $this->assertEquals('Marfil Clásico', $theme->name);
+        $this->assertEquals('Pluma de Primera Carta', $stamp->name);
+        $this->assertEquals('Borgoña Postal Real', $seal->name);
+
+        // Arabic
+        app()->setLocale('ar');
+        $this->assertEquals('عاجي كلاسيكي', $theme->name);
+        $this->assertEquals('ريشة الرسالة الأولى', $stamp->name);
+        $this->assertEquals('عنابي ملكي بريدي', $seal->name);
+
+        // Reset locale
+        app()->setLocale('en');
+    }
+
+    public function test_mailables_render_in_recipient_preferred_language(): void
+    {
+        $sender = User::factory()->create();
+        UserProfile::factory()->create(['user_id' => $sender->id, 'nickname' => 'SenderPal', 'preferred_language' => 'en', 'is_onboarded' => true]);
+
+        $recipientBn = User::factory()->create();
+        UserProfile::factory()->create(['user_id' => $recipientBn->id, 'nickname' => 'RecipientBn', 'preferred_language' => 'bn', 'is_onboarded' => true]);
+
+        $theme = StationeryTheme::first();
+        $stamp = PostageStamp::first();
+        $seal = WaxSeal::first();
+
+        $letter = Letter::create([
+            'sender_id' => $sender->id,
+            'recipient_id' => $recipientBn->id,
+            'title' => 'My Autumn Reflections',
+            'body' => 'Here is my letter content.',
+            'stationery_theme_id' => $theme->id,
+            'postage_stamp_id' => $stamp->id,
+            'wax_seal_id' => $seal->id,
+            'status' => 'delivered',
+        ]);
+
+        // 1. Test NewLetterMail for recipientBn
+        $mail = new NewLetterMail($recipientBn, $letter);
+        $envelope = $mail->envelope();
+        $this->assertStringContainsString('ডিয়ারলি — SenderPal থেকে একটি সিল করা চিঠি এসেছে', $envelope->subject);
+
+        $html = $mail->render();
+        $this->assertStringContainsString('একটি সিল করা চিঠি এসে পৌঁছেছে', $html);
+        $this->assertStringContainsString('চিঠি খুলুন ও খাম উন্মুক্ত করুন', $html);
+
+        // 2. Test LetterReadMail when recipient reads letter (sender gets notified)
+        $senderHi = User::factory()->create();
+        UserProfile::factory()->create(['user_id' => $senderHi->id, 'nickname' => 'SenderHi', 'preferred_language' => 'hi', 'is_onboarded' => true]);
+        $letter->update(['sender_id' => $senderHi->id, 'read_at' => now()]);
+
+        $readMail = new LetterReadMail($senderHi, $letter);
+        $readEnvelope = $readMail->envelope();
+        $this->assertStringContainsString('डियरली — RecipientBn ने आपके पत्र की सील तोड़ी', $readEnvelope->subject);
+
+        $readHtml = $readMail->render();
+        $this->assertStringContainsString('आपका पत्र पढ़ लिया गया है', $readHtml);
     }
 }

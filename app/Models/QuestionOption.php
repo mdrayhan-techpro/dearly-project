@@ -14,14 +14,36 @@ class QuestionOption extends Model
         'question_id',
         'option_key',
         'option_text',
+        'translations',
         'score_value',
         'order_index',
     ];
 
     protected $casts = [
+        'translations' => 'array',
         'score_value' => 'integer',
         'order_index' => 'integer',
     ];
+
+    public function getOptionTextAttribute(?string $value): string
+    {
+        $locale = app()->getLocale();
+        if ($locale !== 'en' && !empty($this->translations[$locale])) {
+            return $this->translations[$locale];
+        }
+
+        return $value ?? '';
+    }
+
+    public function getLocalizedOptionText(?string $locale = null): string
+    {
+        $locale = $locale ?: app()->getLocale();
+        if ($locale !== 'en' && !empty($this->translations[$locale])) {
+            return $this->translations[$locale];
+        }
+
+        return $this->attributes['option_text'] ?? '';
+    }
 
     public function question(): BelongsTo
     {

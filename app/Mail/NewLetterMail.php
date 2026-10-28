@@ -22,10 +22,13 @@ class NewLetterMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
-        $senderNickname = $this->letter->sender->profile->nickname ?? 'A Pen-Pal';
+        $locale = $this->recipientUser->profile->preferred_language ?? 'en';
+        $this->locale($locale);
+
+        $senderNickname = $this->letter->sender->profile->nickname ?? __('A Pen-Pal', [], $locale);
 
         return new Envelope(
-            subject: 'Dearly — A Sealed Letter Has Arrived From '.$senderNickname,
+            subject: __('Dearly — A Sealed Letter Has Arrived From :name', ['name' => $senderNickname], $locale),
         );
     }
 

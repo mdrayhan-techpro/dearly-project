@@ -191,6 +191,23 @@ return [
     |
     */
 
-    'attributes' => [],
-
+    'attributes' => [
+        'email' => 'email address',
+        'password' => 'password',
+        'password_confirmation' => 'password confirmation',
+        'nickname' => 'nickname',
+        'birth_year' => 'birth year',
+        'gender' => 'gender',
+        'bio' => 'bio',
+        'preferred_language' => 'preferred language',
+        'topics' => 'interests',
+        'city_region' => 'city or region',
+        'country_name' => 'country',
+        'title' => 'letter title',
+        'content' => 'letter content',
+        'recipient_code' => 'recipient mailing code',
+        'stationery_theme_id' => 'stationery theme',
+        'postage_stamp_id' => 'postage stamp',
+        'wax_seal_id' => 'wax seal',
+    ],
 ];

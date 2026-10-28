@@ -23,8 +23,13 @@ class MatchFoundMail extends Mailable implements ShouldQueue
 
     public function envelope(): Envelope
     {
+        $locale = $this->recipientUser->profile->preferred_language ?? 'en';
+        $this->locale($locale);
+
         return new Envelope(
-            subject: 'Dearly — A Kindred Spirit Has Been Discovered ('.round($this->matchResult->compatibility_score).'% Compatible)',
+            subject: __('Dearly — A Kindred Spirit Has Been Discovered (:score% Compatible)', [
+                'score' => round($this->matchResult->compatibility_score),
+            ], $locale),
         );
     }
 

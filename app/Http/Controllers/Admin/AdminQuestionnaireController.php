@@ -7,6 +7,7 @@ use App\Models\AdminAuditLog;
 use App\Models\Question;
 use App\Models\Questionnaire;
 use App\Models\QuestionOption;
+use App\Models\UserQuestionnaireAttempt;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -26,7 +27,17 @@ class AdminQuestionnaireController extends Controller
         $dimensions = config('dearly.dimensions', []);
         $questionnaires = Questionnaire::all();
 
-        return view('admin.questions.index', compact('questions', 'dimensions', 'dimension', 'questionnaires'));
+        // Funnel completion metrics
+        $funnelStats = [
+            'total_started' => UserQuestionnaireAttempt::count(),
+            'total_completed' => UserQuestionnaireAttempt::where('is_completed', true)->count(),
+            'len_20' => UserQuestionnaireAttempt::where('questionnaire_length', 20)->where('is_completed', true)->count(),
+            'len_30' => UserQuestionnaireAttempt::where('questionnaire_length', 30)->where('is_completed', true)->count(),
+            'len_40' => UserQuestionnaireAttempt::where('questionnaire_length', 40)->where('is_completed', true)->count(),
+            'len_50' => UserQuestionnaireAttempt::where('questionnaire_length', 50)->where('is_completed', true)->count(),
+        ];
+
+        return view('admin.questions.index', compact('questions', 'dimensions', 'dimension', 'questionnaires', 'funnelStats'));
     }
 
     public function create(): View
@@ -93,6 +104,7 @@ class AdminQuestionnaireController extends Controller
             'dimension' => ['required', 'string'],
             'question_text' => ['required', 'string'],
             'weight' => ['required', 'numeric', 'min:0.1', 'max:5.0'],
+            'order_index' => ['nullable', 'integer', 'min:1'],
             'is_active' => ['nullable', 'boolean'],
             'options' => ['required', 'array', 'size:5'],
             'options.*' => ['required', 'string'],
@@ -102,6 +114,7 @@ class AdminQuestionnaireController extends Controller
             'question_text' => $question->question_text,
             'dimension' => $question->dimension,
             'weight' => $question->weight,
+            'order_index' => $question->order_index,
             'is_active' => $question->is_active,
         ];
 
@@ -109,6 +122,7 @@ class AdminQuestionnaireController extends Controller
             'dimension' => $validated['dimension'],
             'question_text' => $validated['question_text'],
             'weight' => $validated['weight'],
+            'order_index' => $validated['order_index'] ?? $question->order_index,
             'is_active' => $request->boolean('is_active'),
         ]);
 
@@ -126,11 +140,27 @@ class AdminQuestionnaireController extends Controller
                 'question_text' => $question->question_text,
                 'dimension' => $question->dimension,
                 'weight' => $question->weight,
+                'order_index' => $question->order_index,
                 'is_active' => $question->is_active,
             ],
         ]);
 
         return redirect()->route('admin.questions.index')->with('status', 'Question updated successfully.');
+    }
+
+    public function updateOrder(Request $request, int $id): RedirectResponse
+    {
+        $request->validate(['order_index' => 'required|integer|min:1']);
+        $question = Question::findOrFail($id);
+        $oldOrder = $question->order_index;
+        $question->update(['order_index' => (int) $request->input('order_index')]);
+
+        AdminAuditLog::log('question.reorder', 'Question', $question->id, [
+            'old_order' => $oldOrder,
+            'new_order' => $question->order_index,
+        ]);
+
+        return back()->with('status', "Question #{$question->id} priority re-assigned to position {$question->order_index}.");
     }
 
     public function toggleActive(int $id): RedirectResponse
