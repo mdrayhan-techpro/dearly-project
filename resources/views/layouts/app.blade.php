@@ -13,6 +13,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
 
+    <!-- Favicon & Mobile Web App Icons -->
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ asset('favicon-32x32.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('favicon-16x16.png') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ asset('apple-touch-icon.png') }}">
+    <link rel="manifest" href="{{ asset('site.webmanifest') }}">
+    <meta name="theme-color" content="#783C46">
+
     <!-- Scripts & Styles -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
@@ -90,13 +98,103 @@
                     </div>
 
                     @auth
-                        <!-- Notification Bell -->
-                        <a href="{{ route('notifications.index') }}" class="relative p-1.5 text-[#5A4A42] hover:text-[#783C46] transition-colors" title="{{ __('Notifications') }}">
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/></svg>
-                            @if($unreadNotifs > 0)
-                                <span class="absolute top-0.5 ltr:right-0.5 rtl:left-0.5 w-2.5 h-2.5 bg-[#783C46] rounded-full ring-2 ring-[#FAF6EE]"></span>
-                            @endif
-                        </a>
+                        <!-- Interactive Postal Notification Center -->
+                        <div class="relative" x-data="notificationCenter({{ $unreadNotifs }})">
+                            <button @click="isOpen = !isOpen" 
+                                    class="relative p-1.5 text-[#5A4A42] hover:text-[#783C46] transition-colors focus:outline-none" 
+                                    title="{{ __('Notifications') }}">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9"/>
+                                </svg>
+                                <span x-show="unreadCount > 0" 
+                                      x-cloak
+                                      class="absolute -top-1 ltr:-right-1 rtl:-left-1 min-w-[18px] h-[18px] px-1 text-[10px] font-bold font-mono text-white bg-[#783C46] rounded-full ring-2 ring-[#FAF6EE] flex items-center justify-center animate-pulse"
+                                      x-text="unreadCount > 9 ? '9+' : unreadCount">
+                                </span>
+                            </button>
+
+                            <!-- Dropdown Drawer -->
+                            <div x-show="isOpen" 
+                                 @click.away="isOpen = false" 
+                                 x-cloak
+                                 x-transition:enter="transition ease-out duration-200"
+                                 x-transition:enter-start="opacity-0 translate-y-2 scale-95"
+                                 x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave="transition ease-in duration-150"
+                                 x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                                 x-transition:leave-end="opacity-0 translate-y-2 scale-95"
+                                 class="absolute ltr:right-0 rtl:left-0 mt-2 w-80 sm:w-96 bg-[#FAF6EE] border border-[#E9DDC7] rounded-xl shadow-2xl overflow-hidden z-50">
+                                
+                                <!-- Header -->
+                                <div class="px-4 py-3 bg-[#F0E6D2] border-b border-[#E9DDC7] flex items-center justify-between">
+                                    <div class="flex items-center space-x-2 rtl:space-x-reverse">
+                                        <div class="w-2 h-2 rounded-full bg-[#783C46]"></div>
+                                        <h3 class="font-serif font-bold text-sm text-[#342A25]">{{ __('Postal Notifications') }}</h3>
+                                    </div>
+                                    <button x-show="unreadCount > 0" 
+                                            @click="markAllAsRead()" 
+                                            class="text-[11px] font-semibold text-[#783C46] hover:text-[#582A32] underline transition-colors">
+                                        {{ __('Mark all as read') }}
+                                    </button>
+                                </div>
+
+                                <!-- Device Push Alert Permission Toggle -->
+                                <div class="px-4 py-2 bg-[#FAF6EE] border-b border-[#E9DDC7]/60 flex items-center justify-between text-xs">
+                                    <div class="flex items-center space-x-2 rtl:space-x-reverse text-[#5A4A42]">
+                                        <svg class="w-4 h-4 text-[#B79A61]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z"/></svg>
+                                        <span class="text-[11px]">{{ __('Device Alerts') }}:</span>
+                                    </div>
+                                    <template x-if="devicePermission === 'granted'">
+                                        <span class="inline-flex items-center text-[10px] text-emerald-800 bg-emerald-100 font-semibold px-2 py-0.5 rounded-full">
+                                            ✓ {{ __('Active') }}
+                                        </span>
+                                    </template>
+                                    <template x-if="devicePermission !== 'granted'">
+                                        <button @click="requestDeviceAlerts()" class="text-[11px] font-semibold text-white bg-[#783C46] hover:bg-[#582A32] px-2.5 py-1 rounded shadow-sm transition-colors">
+                                            {{ __('Enable Alerts') }}
+                                        </button>
+                                    </template>
+                                </div>
+
+                                <!-- Notification List -->
+                                <div class="max-h-72 overflow-y-auto divide-y divide-[#E9DDC7]/60">
+                                    <template x-if="loading && notifications.length === 0">
+                                        <div class="p-6 text-center text-xs text-[#5A4A42]">
+                                            <p>{{ __('Checking postal ledger...') }}</p>
+                                        </div>
+                                    </template>
+
+                                    <template x-if="!loading && notifications.length === 0">
+                                        <div class="p-6 text-center text-xs text-[#5A4A42] space-y-1">
+                                            <p class="font-serif font-semibold text-[#342A25]">{{ __('No notifications at this time.') }}</p>
+                                            <p class="text-[11px] text-[#B79A61]">{{ __('Updates about letters and pen-friends will appear here.') }}</p>
+                                        </div>
+                                    </template>
+
+                                    <template x-for="item in notifications" :key="item.id">
+                                        <div @click="markAsRead(item.id, item.action_url)" 
+                                             class="p-3.5 hover:bg-[#E9DDC7]/40 cursor-pointer transition-colors"
+                                             :class="!item.is_read ? 'bg-[#FAF6EE] border-l-4 border-l-[#783C46]' : 'opacity-75'">
+                                            <div class="flex items-start justify-between gap-2">
+                                                <div class="space-y-0.5">
+                                                    <p class="font-serif font-bold text-xs text-[#342A25]" x-text="item.title"></p>
+                                                    <p class="text-[11px] text-[#5A4A42] leading-snug line-clamp-2" x-text="item.message"></p>
+                                                    <span class="text-[10px] text-[#B79A61] font-mono inline-block pt-1" x-text="item.time_ago"></span>
+                                                </div>
+                                                <div x-show="!item.is_read" class="w-2 h-2 rounded-full bg-[#783C46] mt-1 flex-shrink-0"></div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+
+                                <!-- Footer -->
+                                <div class="p-2.5 bg-[#F0E6D2] border-t border-[#E9DDC7] text-center">
+                                    <a href="{{ route('notifications.index') }}" class="text-xs font-semibold text-[#783C46] hover:text-[#582A32] transition-colors">
+                                        {{ __('View All in Postal Ledger') }} &rarr;
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- User Profile Menu -->
                         <div class="relative" x-data="{ userMenu: false }">
